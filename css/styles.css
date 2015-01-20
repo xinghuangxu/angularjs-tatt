@@ -1,0 +1,194 @@
+.body {
+	width: 1000px;
+	margin: 50px auto;
+	-webkit-perspective: 600px;
+    -ms-perspective: 600px;
+    perspective: 600px;
+}
+
+.dual {
+	float: left;
+	margin-right: 75px;
+}
+
+/*Modal Text input box styling*/
+.form-control-mt {
+  display: block;
+  width: 100%;
+  height: 22px;
+  padding: 4px 12px;
+  position: relative;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #5b6770;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+/*Modal drop down input styling*/
+.form-control-dd {
+  display: block;
+  width: 100%;
+  height: 22px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #5b6770;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  -webkit-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+          transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.form-control-dd:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.invalid {
+	color: red;
+}
+
+.container {
+  width: 250px;
+  margin: 50px auto;
+  -webkit-perspective: 600px;
+  -ms-perspective: 600px;
+  perspective: 600px;
+}
+
+.throbber {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.box-shadow {
+  -webkit-box-shadow: 0 12px 30px darkgrey;
+  box-shadow: 0 12px 30px darkgrey;
+}
+
+
+.message {
+  margin-top: 15px;
+  text-align: center;
+}
+
+.animate-if.ng-enter, .animate-if.ng-leave {
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
+}
+
+.animate-if.ng-enter,
+.animate-if.ng-leave.ng-leave-active {
+  opacity:0;
+}
+
+.animate-if.ng-leave,
+.animate-if.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
+td{
+	padding: 5px 10px 0px 0px;
+}
+
+.jstree-iteration{
+	font-style: bold;
+	color: red;
+	font-weight: 700
+}
+
+.btn-p-default {
+	width: 20px;
+	height: 20px;
+	color: #333;
+	line-height: 100%;
+	white-space: nowrap;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 0 2px 5px 0;
+	
+	/* default button color */
+	background-color: #ececec;
+	border: solid 1px #b8b8b9;
+	
+	/* default box shadow */
+	-webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 1px 0 rgba(0,0,0,.1);
+	-moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 1px 0 rgba(0,0,0,.1);
+	box-shadow: inset 0 1px 0 rgba(255,255,255,.3), 0 1px 0 rgba(0,0,0,.1);
+
+	/* default border radius */
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	
+}
+
+/* default gradient */
+.btn-p {
+	display: inline-block;
+	float: left;
+	 text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+	padding: 1px;
+	margin-bottom: 0;
+  margin-top: 0;
+  font-size: 12px;
+  font-weight: normal;
+	top: -1px;
+	left: -1px;
+	z-index: -1;
+	
+	-webkit-box-shadow: inset 0 2px 0 rgba(255,255,255,.3);
+	-moz-box-shadow: inset 0 2px 0 rgba(255,255,255,.3);
+	box-shadow: inset 0 2px 0 rgba(255,255,255,.3);
+
+	/* default gradient */
+	background: -moz-linear-gradient(top, #eeeeee 0%, #d2d2d2 100%);
+	background: -webkit-linear-gradient(top, #eeeeee 0%, #d2d2d2 100%);
+	background: linear-gradient(top, #eeeeee 0%, #d2d2d2 100%);
+}
+
+.popover-content {
+  padding: 2px 4px;
+}
+
+.popover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1010;
+  display: none;
+  height: 2;
+  max-width: 100%;
+  text-align: left;
+  white-space: normal;
+  background-color: #B5BBBC;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+          box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+}
+
+#alert-location{
+	position: fixed;
+	z-index: 2;
+	width:auto;
+	top: 5px;
+	left: 5px;
+}

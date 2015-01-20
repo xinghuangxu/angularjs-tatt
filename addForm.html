@@ -1,0 +1,72 @@
+<div class="modal-header">
+  <h3>Create New User Story</h3>
+</div>
+
+<div class="modal-body form-group">
+	<form name="formNode" id="formNode" >
+	<table>
+		<tr class="border: 0px; margin: 0px;">
+			<td> &nbsp </td>
+			<td colspan="3" style="color: red;" ng-if="formNode.title.$invalid && formNode.title.$dirty" >Title is required to create new User Story.</td>
+			<td colspan="3" style="color: red;" ng-if="formNode.title.$error.maxlength && formNode.title.$dirty" >Title is too long</td>
+		</tr>
+		<tr class="form-group" ng-class="{ 'has-error': formNode.title.$invalid && formNode.title.$dirty}">
+			<td> <b><span style = "color: red">*</span>Title:</b> </td>
+			<td colspan="3"> <input type="text" name="title"  class="form-control-mt form-control" ng-model="newNode.title" style="width: 400px;" ng-maxlength="50" required>
+			</td>
+		</tr>
+		
+		<tr>
+		   <td> <b>ID:</b> </td>
+		   <td> <em>ID will be automatically assigned</em> </td>
+			<td> <b>Owner:</b>  </td>
+			<td><select style="border:1px solid silver; height:22px;" class="form-control-dd" ng-model="newNode.owner" data-html="1" ng-options="owner for owner in ownerList"></select> </td>
+		</tr>
+		
+		<tr>
+			<td> <b>State:</b></td>
+			<td><select class="form-control-dd " style="border:1px solid silver; height:22px;" ng-model="newNode.state" data-html="1">
+				<option value="Defined">Defined</option>
+				<option value="In-Progress">In-Progress</option>
+				<option value="Completed">Completed</option>
+				<option value="Accepted">Accepted</option>
+			</select> </td>
+			<td> <b>Release:</b></td>
+					<td><select class="form-control-dd" style="border:1px solid silver; height:22px;"  ng-model="newNode.release" ng-options="release for release in exactReleaseList" data-html="1" ></select> </td>
+		</tr>
+		
+		<tr>
+			<td> <b>Points:</b> </td>
+			 <td><select class="form-control-dd " style="border:1px solid silver; height:22px;" ng-model="newNode.points" data-html="1">
+				<option value="0">0</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="5">5</option>
+				<option value="8">8</option>
+				<option value="13">13</option>
+				<option value="21">21</option>
+			</select> </td>
+			<td> <b>Iteration:</b></td>
+			<td> <select class="form-control-af " style="border:1px solid silver; height:22px;" ng-model="newNode.iteration" data-html="1" ng-options="iteration for iteration in exactIterationList"> </select> </td> 
+		</tr>
+		
+		<tr>
+			<td > <b>Architectural Topic ID:</b></td>
+			<td colspan="3"><input type="text" class="form-control-mt form-control" ng-model="newNode.arch" style="width: 400px;" > </td>
+		</tr>
+	</table>
+
+	<br>
+	<b>Description:</b>
+	<wysiwyg textarea-id="question" textarea-class="form-control"  textarea-height="200px" textarea-name="textareaQuestion" textarea-required ng-model="newNode.description" enable-bootstrap-title="false" textarea-menu="{{}}"></wysiwyg> 
+	
+</div>
+<div class="modal-footer">
+
+	<button type="submit" class="btn btn-primary"   ng-click="submit('new');" ng-disabled="formNode.$invalid">Save and New</button>
+	<button type="submit" class="btn btn-primary"   ng-click="submit('close');" ng-disabled="formNode.$invalid">Save and Close</button>
+	<button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+</div>
+
+	</form>
