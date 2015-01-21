@@ -1,4 +1,6 @@
-nbproject
+/nbproject
+/php/cookie.txt
+
 /lib
 /node_modules
 /npm-debug.log
