@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <h3 style="display: inline-block;">User Story Information</h3>
+	 <span class="progress" style="width: 20%; float: right; position: relative; margin-top: 20px;">
+		<div class="progress-bar" role="progressbar" aria-valuenow="{{percentage}}" aria-valuemin="0" aria-valuemax="100" ng-style="{width: ( percentage + '%')};">
+			{{(100*eqiData.Accepted / eqiData.Planned)| number:0}} % 
+		</div>
+	</span>
+	<div ng-show="nopoints" style="width: 15%; float: right; position: relative; margin-top: 20px; color: gray;">  Invalid Points </div>
+	<div ng-if="load" class="animate-if" style="width: 15%; float: right; position: relative; margin-top: 20px;">  Loading...<img id="spinner" class="throbber" src="assets/img/throbber.gif"></div>
+   <div style="width: 15%; float: right; position: relative; margin-top: 20px;" ng-hide="load || nopoints"><em>Planned: </em>{{eqiData.Planned}} <em>Accepted:</em> {{eqiData.Accepted}} </div>
+  </div>
+  
+<div class="modal-body">
+	<table>
+		<tr>
+			<td> <b>Title:</b> </td>
+			<td colspan="4"> {{modalData.Title}} </td>
+		</tr>
+		<tr>
+		    <td> <b>ID:</b></td>
+			<td> {{modalData.id}} </td>
+			
+			<td> <b>Owner:</b> </td>
+			<td>{{modalData.owner}} </td>
+		</tr>
+			
+		<tr>
+			<td> <b>State:</b> </td>
+			<td>{{modalData.state}} </td>
+		
+			<td> <b>Release:</b> </td>
+			<td>{{modalData.release}} </td>
+		</tr>
+			
+		<tr>
+			<td> <b>Points:</b> </td>
+			<td>{{modalData.points}} </td>
+		
+			<td> <b>Iteration:</b> </td>
+			<td>{{modalData.iteration}} </td>
+		</tr>
+		
+		<tr>
+			<td> <b>Architectural Topic ID:</b></td>
+			<td colspan="3">  {{modalData.arch}} </td>
+		</tr>
+	</table>
+			<br />
+	<b>Description:</b>
+	<div ng-bind-html="modalData.description"></div>
+	
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+</div>
