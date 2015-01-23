@@ -26,10 +26,11 @@ boxcar.factory('boxcarContainer', function () {
         this.ownership = data['ownership'];
         this.approach = data['approach'];
         this.attrs = {
-            qual: data['qual'],
-            impact: data['impact'],
-            scope: data['scope'],
-            risk: data['risk']
+            Qual: data['qual'],
+            Impact: data['impact'],
+            Ownership:data['ownership'],
+            Scope: data['scope'],
+            Risk: data['risk']
         };
     }
     Strategy.prototype.toTreeFormat = function (treeArray, classifier) {
@@ -39,6 +40,17 @@ boxcar.factory('boxcarContainer', function () {
             text: this.text,
             icon: this.icon
         });
+        for (var prop in this.attrs) {
+            if (this.attrs.hasOwnProperty(prop)) {
+                treeArray.push({
+                    id: this.id + prop,
+                    parent: this.id,
+                    text: prop+": "+this.attrs[prop],
+                    icon: iconPath + "Attribute"
+                });
+                //this.attrs[prop];
+            }
+        }
     }
     function PR(data) {
         var that = this;

@@ -93,7 +93,7 @@ rally.factory('myAuthentication', function (dataService, $location, $log) {
                             break;
                         case 400:
                             $log.log("Session Timeout");
-                            $alert({title: 'Session Timeout:', content: 'Please relogin', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
+                            $alert({title: 'Session Timeout:', content: 'Please relogin', container: '#alert-location', type: 'danger', duration: 3, dismissable: false});
                             $location.path("/rally/login");
                             myAuthentication.loginView = true;
                             myAuthentication.dataView = false;
