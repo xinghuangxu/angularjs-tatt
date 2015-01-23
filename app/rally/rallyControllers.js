@@ -1,29 +1,41 @@
 //Login form controller
-rally.controller('myLogin', function ($scope, dataService, myAuthentication, $alert, $location) {
+rally.controller('myLogin', function ($scope, myAuthentication) {
+    myAuthentication.loginCheck();//check if have log in before
+    //Function to authenticate credentials
+    $scope.login =function(){
+        myAuthentication.login($scope.username,$scope.password);
+    };
+});
+
+rally.controller("rallyController",function(){
+    
+});
+
+//Data fields controller
+rally.controller("main", function ($scope, dataService, myAuthentication, $alert, $log) {
     //Pulls in variables from factory for use
     $scope.authentication = myAuthentication;
+    //Array to store all actions that can be undone
+    $scope.undoArray = [];
     //Timeout variables
     var timeoutCount = 0;
     var maxTimeoutAttempts = 3;
-    
-    //Function to automatically check stored login credentials
-    $scope.autoLogin = function () {
-        //Service Call to check if authentication credentials are stored for use for automatic login
-        dataService.loginCheck(
+    $scope.getProjectList = function () {
+        $scope.load = true;
+        //Service call to request the project list
+        dataService.projectList(
                 {},
                 {},
                 function (val, response)
                 {
+                    // domain availability indicator, creates an alert if the Rally service is down
                     if (val.data == 'The domain is not registered') {
                         alert("Rally service is unavailable");
                     }
                     else {
-                        if (val.data == 'exists') {
-                            myAuthentication.loginView = false;
-                            $location.path("/rally/main");
-                            myAuthentication.dataView = true;
-                            timeoutCount = 0;
-                        }
+                        $log.log("Project List: ", val.data);
+                        $scope.projectList = val.data;
+                        $scope.load = false;
                     }
                 },
                 function (response)
@@ -31,147 +43,36 @@ rally.controller('myLogin', function ($scope, dataService, myAuthentication, $al
                     //Error cases
                     switch (response.status) {
                         case 0:
-                            if (timeoutCount < maxTimeoutAttempts - 1) {
-                                console.log("PHP timeout: Retrying connection...");
+                            if (timeoutCount < maxTimeoutAttempts) {
+                                $log.log("PHP timeout: Retrying connection...");
                                 $alert({title: 'PHP Timeout:', content: 'Retrying connection...', container: '#alert-location', type: 'warning', duration: 5, dismissable: false});
-                                $scope.autoLogin();
                                 timeoutCount++;
+                                $scope.getProjectList();
                             } else {
-                                console.log("Timed Out: Could not reach php server");
+                                $log.log("Timed Out: Could not reach php server");
                                 $alert({title: 'Timed Out:', content: 'Could not reach php server', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
                                 timeoutCount = 0;
                             }
                             break;
                         case 400:
-                            console.log("Login Credentials not found");
+                            $log.log("Session Timeout");
+                            $alert({title: 'Session Timeout:', content: 'Please relogin', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
+                            delete $scope.tree;
+                            delete $scope.releaseList;
+                            delete $scope.projectList;
+                            delete $scope.projectChosen;
+                            delete $scope.releaseChosen;
                             myAuthentication.loginView = true;
                             myAuthentication.dataView = false;
                             break;
                     }
+                    $scope.load = false;
                 }
         );
-    }
+    };
+    //Call to initiate project list request
+    $scope.getProjectList();
 
-    //Call to automatically login if credentials are stored (ie. user refreshes page)
-    $scope.autoLogin();
-
-    //Function to authenticate credentials
-    $scope.login = function () {
-        //Service call for authentication data
-        dataService.authentication(
-                //Post parameters
-                        {
-                            username: $scope.username,
-                            password: $scope.password
-                        },
-                function (val, response)
-                {
-                    if (val.data == 'The domain is not registered') {
-                        alert("Rally service is unavailable");
-                    }
-                    else {
-                        delete $scope.username;
-                        delete $scope.password;
-//				myAuthentication.loginView = false;
-                        $location.path("/rally/main");
-                        myAuthentication.dataView = true;
-                        timeoutCount = 0;
-                    }
-                },
-                        function (response)
-                        {
-                            //Error cases
-                            switch (response.status) {
-                                case 0:
-                                    if (timeoutCount < maxTimeoutAttempts - 1) {
-                                        console.log("PHP timeout: Retrying connection...");
-                                        $alert({title: 'PHP Timeout:', content: 'Retrying connection...', container: '#alert-location', type: 'warning', duration: 5, dismissable: false});
-                                        $scope.login();
-                                        timeoutCount++;
-                                    } else {
-                                        console.log("Timed Out: Could not reach php server");
-                                        $alert({title: 'Timed Out:', content: 'Could not reach php server', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
-                                        timeoutCount = 0;
-                                    }
-                                    break;
-                                case 400:
-                                    $alert({title: 'Error:', content: 'Invalid Login Information', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
-                                    break;
-                            }
-                        }
-                );
-            }
-});
-
-//Data fields controller
-rally.controller("main", function ($scope, $location,dataService, myAuthentication, $alert) {
-    //Pulls in variables from factory for use
-    $scope.authentication = myAuthentication;
-    //Array to store all actions that can be undone
-    $scope.undoArray = [];
-    //Timeout variables
-    timeoutCount = 0;
-    maxTimeoutAttempts = 3;
-
-    //Watch to determine when to run the first resource call (for project list)
-    $scope.$watch('authentication.dataView', function () {
-        //If statement to prevent block of code from running when controller is compiled
-        if ($scope.authentication.dataView) {
-            //Function to get project list
-            $scope.getProjectList = function () {
-                $scope.load = true;
-                //Service call to request the project list
-                dataService.projectList(
-                        {},
-                        {},
-                        function (val, response)
-                        {
-                            // domain availability indicator, creates an alert if the Rally service is down
-                            if (val.data == 'The domain is not registered') {
-                                alert("Rally service is unavailable");
-                            }
-                            else {
-                                console.log("Project List: ", val.data);
-                                $scope.projectList = val.data;
-                                $scope.load = false;
-                            }
-                        },
-                        function (response)
-                        {
-                            //Error cases
-                            switch (response.status) {
-                                case 0:
-                                    if (timeoutCount < maxTimeoutAttempts) {
-                                        console.log("PHP timeout: Retrying connection...");
-                                        $alert({title: 'PHP Timeout:', content: 'Retrying connection...', container: '#alert-location', type: 'warning', duration: 5, dismissable: false});
-                                        $scope.getProjectList();
-                                        timeoutCount++;
-                                    } else {
-                                        console.log("Timed Out: Could not reach php server");
-                                        $alert({title: 'Timed Out:', content: 'Could not reach php server', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
-                                        timeoutCount = 0;
-                                    }
-                                    break;
-                                case 400:
-                                    console.log("Session Timeout");
-                                    $alert({title: 'Session Timeout:', content: 'Please relogin', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
-                                    delete $scope.tree;
-                                    delete $scope.releaseList;
-                                    delete $scope.projectList;
-                                    delete $scope.projectChosen;
-                                    delete $scope.releaseChosen;
-                                    myAuthentication.loginView = true;
-                                    myAuthentication.dataView = false;
-                                    break;
-                            }
-                            $scope.load = false;
-                        }
-                );
-            }
-            //Call to initiate project list request
-            $scope.getProjectList();
-        }
-    });
 
     //Function to request release list data
     $scope.getRelease = function () {
@@ -307,7 +208,7 @@ rally.controller("main", function ($scope, $location,dataService, myAuthenticati
 
     //Function to move a node
     $scope.moveNode = function (data) {
-        moveNodeData = {node: data.node, parent: data.parent};
+        var moveNodeData = {node: data.node, parent: data.parent};
         //Service call to change the parent of a node
         dataService.dragdrop(
                 {
@@ -320,10 +221,10 @@ rally.controller("main", function ($scope, $location,dataService, myAuthenticati
                         alert("Rally service is unavailable");
                     }
                     else {
-                        console.log("Move Successful");
+                        $log.log("Move Successful");
                         $alert({title: 'Success:', content: 'User Story Moved', container: '#alert-location', type: 'success', duration: 5, dismissable: false});
                         //On successful node move, information is stored for undo action
-                        undoNodeData = {
+                        var undoNodeData = {
                             input: {node: data.node, parent: data.oldParent},
                             input_type: 'dragdrop',
                             position: data.oldPosition
@@ -341,18 +242,18 @@ rally.controller("main", function ($scope, $location,dataService, myAuthenticati
                     switch (response.status) {
                         case 0:
                             if (timeoutCount < maxTimeoutAttempts) {
-                                console.log("PHP timeout: Retrying connection...");
+                                $log.log("PHP timeout: Retrying connection...");
                                 $alert({title: 'PHP Timeout:', content: 'Retrying connection...', container: '#alert-location', type: 'warning', duration: 5, dismissable: false});
                                 $scope.getProjectList();
                                 timeoutCount++;
                             } else {
-                                console.log("Timed Out: Could not reach php server");
+                                $log.log("Timed Out: Could not reach php server");
                                 $alert({title: 'Timed Out:', content: 'Could not reach php server', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
                                 timeoutCount = 0;
                             }
                             break;
                         case 400:
-                            console.log("Session Timeout");
+                            $log.log("Session Timeout");
                             $alert({title: 'Session Timeout:', content: 'Please relogin', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
                             delete $scope.tree;
                             delete $scope.releaseList;
@@ -371,8 +272,8 @@ rally.controller("main", function ($scope, $location,dataService, myAuthenticati
     //Function that currently undos any move node action. Note: This function is compatible to add add/delete undo functions in the future
     $scope.undoAction = function () {
         $scope.undoData = $scope.undoArray.pop();
-        console.log('Undo Data', $scope.undoData);
-        console.log('Undo Array', $scope.undoArray);
+        $log.log('Undo Data', $scope.undoData);
+        $log.log('Undo Array', $scope.undoArray);
         //Service Call to perform an undo action
         dataService.undo(
                 {
@@ -388,7 +289,7 @@ rally.controller("main", function ($scope, $location,dataService, myAuthenticati
                     else {
                         //Deletes the undo Data. This is because if the user does an action undos and does the same action and undos again, the directive will not catch the undoData watch since the undoData would not have technically changed. This makes sure the watch catches all instances of the undo button click. Unfortunately deleting undoData also triggers watch however it will not try and move a node due to the directive code. This code can/should be updated in the future as needed.
                         delete $scope.undoData;
-                        console.log('Undo Successful');
+                        $log.log('Undo Successful');
                         $alert({title: 'Success:', content: 'Move Undone', container: '#alert-location', type: 'success', duration: 5, dismissable: false});
                     }
                 },
@@ -398,18 +299,18 @@ rally.controller("main", function ($scope, $location,dataService, myAuthenticati
                     switch (response.status) {
                         case 0:
                             if (timeoutCount < maxTimeoutAttempts) {
-                                console.log("PHP timeout: Retrying connection...");
+                                $log.log("PHP timeout: Retrying connection...");
                                 $alert({title: 'PHP Timeout:', content: 'Retrying connection...', container: '#alert-location', type: 'warning', duration: 5, dismissable: false});
                                 $scope.getProjectList();
                                 timeoutCount++;
                             } else {
-                                console.log("Timed Out: Could not reach php server");
+                                $log.log("Timed Out: Could not reach php server");
                                 $alert({title: 'Timed Out:', content: 'Could not reach php server', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
                                 timeoutCount = 0;
                             }
                             break;
                         case 400:
-                            console.log("Session Timeout");
+                            $log.log("Session Timeout");
                             $alert({title: 'Session Timeout:', content: 'Please relogin', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
                             delete $scope.tree;
                             delete $scope.releaseList;
@@ -421,75 +322,16 @@ rally.controller("main", function ($scope, $location,dataService, myAuthenticati
                             break;
                     }
                 }
-        )
-    }
+        );
+    };
 
     //Function to deliver the edit enable checkbox value to the jstree directive
     $scope.editEnable = function () {
         return $scope.enabled;
-
     };
 
     //Function to logout of rally plug-in
-    $scope.logOut = function () {
-        $scope.load = true;
-        //Service call to log out the user
-        dataService.logOut(
-                {},
-                {},
-                function (val, response)
-                {
-                    if (val.data == 'The domain is not registered') {
-                        alert("Rally service is unavailable");
-                    }
-                    else {
-                        console.log("Logout Successful");
-                        $scope.load = false;
-                        //Reset data fields if the user chooses to login again
-                        delete $scope.tree;
-                        delete $scope.releaseList;
-                        delete $scope.projectList;
-                        delete $scope.projectChosen;
-                        delete $scope.releaseChosen;
-                        $location.path("/rally");
-                        myAuthentication.loginView = true;
-                        myAuthentication.dataView = false;
-                        timeoutCount = 0;
-                    }
-                },
-                function (response)
-                {
-                    //Error cases
-                    switch (response.status) {
-                        case 0:
-                            if (timeoutCount < maxTimeoutAttempts) {
-                                console.log("PHP timeout: Retrying connection...");
-                                $alert({title: 'PHP Timeout:', content: 'Retrying connection...', container: '#alert-location', type: 'warning', duration: 5, dismissable: false});
-                                $scope.getProjectList();
-                                timeoutCount++;
-                            } else {
-                                console.log("Timed Out: Could not reach php server");
-                                $alert({title: 'Timed Out:', content: 'Could not reach php server', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
-                                timeoutCount = 0;
-                            }
-                            break;
-                        case 400:
-                            console.log("Session Timeout");
-                            $alert({title: 'Session Timeout:', content: 'Please relogin', container: '#alert-location', type: 'danger', duration: 5, dismissable: false});
-                            delete $scope.tree;
-                            delete $scope.releaseList;
-                            delete $scope.projectList;
-                            delete $scope.projectChosen;
-                            delete $scope.releaseChosen;
-                            $location.path("/rally");
-                            myAuthentication.loginView = true;
-                            myAuthentication.dataView = false;
-                            break;
-                    }
-                    $scope.load = false;
-                }
-        );
-    }
+    $scope.logOut = myAuthentication.logout;
 
     //Function to store selected jstree node information
     $scope.storeNode = function (data) {
@@ -713,7 +555,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
                         console.log("Percentage: ", $scope.percentage);
                         $scope.load = false;
                     }
-            },
+                },
                 function (response)
                 {
                     //Error cases

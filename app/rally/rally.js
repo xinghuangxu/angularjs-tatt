@@ -3,17 +3,17 @@ var rally = angular.module("spark.rally", ['ngAnimate', 'ngSanitize', 'mgcrea.ng
         .config(['$routeProvider',
             function ($routeProvider) {
                 $routeProvider.
-                        when('/rally', {
+                        when('/rally/login', {
                             templateUrl: 'rally/login.html',
                             controller: 'myLogin'
                         }).
-                        when('/rally/main', {
+                        when('/rally', {
                             templateUrl: 'rally/main.html',
                             controller:"main",
                             resolve: {
                                 auth: ["myAuthentication", "$location",function (myAuthentication,$location) {
                                         if(myAuthentication.loginView){
-                                            $location.path("/rally");
+                                            $location.path("/rally/login");
                                         }
                                     }]
                             }
