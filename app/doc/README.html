@@ -1,0 +1,66 @@
+
+<style>
+    .doc{
+        background-color: #f5f5f5;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 9.5px;
+    }
+</style>
+
+<div class="container">
+    <h2>Documentation</h2>
+    <pre>
+<h3>Currently Refactoring Items:</h3>
+1. Use Bower to manage js package dependencies. (the package will still be checked into version control since the size of them are still fairly small for now, doing so would reduce deployment risk)
+2. Add in some functional and acceptance testing using karma & protractor
+3. Change folder structure into views and each view will have its own controller(s) and sharable services/directives will be put into a shared folder called components.
+4. Use RouteProvider to manage routing.
+    </pre>
+    <pre>
+<h3>Selenium Setup:</h3>
+
+
+    </pre>
+
+
+
+
+
+    <div class="doc section"><div class="titlepage"><div><div><h3 class="title"><a id="installation.phar.windows"></a>PHPUnit Set up on Windows</h3></div></div></div><p>
+            Globally installing the PHAR involves the same procedure as manually
+            <a class="ulink" href="https://getcomposer.org/doc/00-intro.md#installation-windows" target="_top">
+                installing Composer on Windows</a>:
+        </p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>
+                        Create a directory for PHP binaries; e.g., <code class="filename">C:\bin</code>
+                    </p></li><li class="listitem"><p>
+                        Append <strong class="userinput"><code>;C:\bin</code></strong> to your <code class="varname">PATH</code>
+                        environment variable
+                        (<a class="ulink" href="http://stackoverflow.com/questions/6318156/adding-python-path-on-windows-7" target="_top">related help</a>)
+                    </p></li><li class="listitem"><p>
+                        Download <a class="ulink" href="https://phar.phpunit.de/phpunit.phar" target="_top">https://phar.phpunit.de/phpunit.phar</a> and
+                        save the file as <code class="filename">C:\bin\phpunit.phar</code>
+                    </p></li><li class="listitem"><p>
+                        Open a command line (e.g.,
+                        press <span class="keycap"><strong>Windows</strong></span>+<span class="keycap"><strong>R</strong></span>
+                        » type <strong class="userinput"><code>cmd</code></strong>
+                        » <span class="keycap"><strong>ENTER</strong></span>)
+                    </p></li><li class="listitem"><p>
+                        Create a wrapping batch script (results in
+                        <code class="filename">C:\bin\phpunit.cmd</code>):
+                    </p><pre class="screen"><code class="prompt">C:\Users\username&gt;</code> <strong class="userinput"><code>cd C:\bin</code></strong>
+<code class="prompt">C:\bin&gt;</code> <strong class="userinput"><code>echo @php "%~dp0phpunit.phar" %* &gt; phpunit.cmd</code></strong>
+<code class="prompt">C:\bin&gt;</code> <strong class="userinput"><code>exit</code></strong>
+                    </pre></li><li class="listitem"><p>
+                        Open a new command line and confirm that you can execute PHPUnit
+                        from any path:
+                    </p><pre class="screen"><code class="prompt">C:\Users\username&gt;</code> <strong class="userinput"><code>phpunit --version</code></strong>
+<code class="computeroutput">PHPUnit x.y.z by Sebastian Bergmann.</code>
+                    </pre></li></ol></div><p>
+            For Cygwin and/or MingW32 (e.g., TortoiseGit) shell environments, you
+            may skip step 5. above, simply save the file as
+            <code class="filename">phpunit</code> (without <code class="filename">.phar</code>
+            extension), and make it executable via
+            <strong class="userinput"><code>chmod 775 phpunit</code></strong>.
+        </p></div>
+</div>

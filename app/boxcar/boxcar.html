@@ -1,0 +1,22 @@
+<div class="body">
+        <form>
+            <div>
+                <b>Search:&nbsp;</b>
+                <input type="text" id="treeSearch" value="" class="input" style="padding:4px; border-radius:4px; border:1px solid silver;" />
+                <input type="button" value="Refresh" ng-click="getTreeData()"></input>
+                <input type="button" value="Logout" ng-click="logOut()"></input>
+                <input type="button" value="Undo" ng-click="undoAction()" ng-show="undoArray.length"></input>
+            </div>
+        </form>
+
+        <div>
+            <form>
+                <label>Allow Drag and Drop</label>
+                <input type="checkbox" ng-change="editEnable();" ng-model="enabled" ng-init="enabled = false">
+            </form>
+        </div>
+
+        <div ng-if="load" class="animate-if">  Loading...<img id="spinner" class="throbber" src="assets/img/throbber.gif"></div>
+        
+        <boxcar-jstree ng-model="tree"></boxcar-jstree>
+</div>

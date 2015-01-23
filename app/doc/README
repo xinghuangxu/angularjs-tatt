@@ -1,7 +1,0 @@
-introduce bower to manage front-end js packages
-
-
-1. Use Bower to manage js package dependencies. (the package will still be checked into version control since the size of them are still fairly small for now, doing so would reduce deployment risk)
-2. Add in some functional and acceptance testing using karma & protractor
-3. Change folder structure into views and each view will have its own controller(s) and sharable services/directives will be out into a shared folder called components.
-4. Use RouteProvider to manage routing.

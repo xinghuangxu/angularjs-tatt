@@ -1,31 +1,26 @@
 <?php
+
 //Calling PHP TOOLKIT functions
 include 'phpkit_toolkit.php';
 
 //Calling Domain Availability functions
 //include 'DomainAvailability1.php';
-
 //Define a Domain
 //$Domain = new DomainAvailability();
-
 // Check the domain availability
 //$available = $Domain->is_available("rally.rallydev.com");
-
 // Make actions depending on the domain availability
 //if ($available) {
 //echo "The domain is not registered";
 //}
-
-
 //else {
-
 //Starting the session for the authentication variables
 session_start();
 $_SESSION['AllUserStories'] = array();
 
 //Check the last activitiy or request on the page
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] >
-    3600)) {
+        3600)) {
     // When the Last request is more than 30 minutes ago
     session_unset(); // unset $_SESSION variable for the run-time
     session_destroy(); // destroy session data in storage
@@ -44,7 +39,6 @@ if (!isset($_GET['input_type'])) {
     //search if the username and password exists
     if (isset($_SESSION['user']) && isset($_SESSION['pass'])) {
         echo json_encode((array('data' => 'exists')));
-
     }
 
 
@@ -62,9 +56,7 @@ if (!isset($_GET['input_type'])) {
         $_SESSION['user'] = $username;
         $_SESSION['pass'] = $password;
         echo json_encode((array('data' => 'success')));
-
     }
-
 }
 
 
@@ -83,7 +75,7 @@ else {
     //Receive a request call from front-end and respoends to it
     switch ($input_type) {
 
-            //Asking for a list of projects in Rally
+        //Asking for a list of projects in Rally
         case 'projectList':
 
 
@@ -101,7 +93,7 @@ else {
                 $project_array[$x] = new stdClass();
                 $project_array[$x] = $proj_list[$x]['_refObjectName'];
             }
-            
+
             // Sort Releases Array alphabetically
             array_multisort($project_array);
 
@@ -110,7 +102,7 @@ else {
 
             break;
 
-            //Asking for a list of Releases in Rally
+        //Asking for a list of Releases in Rally
         case 'releaseList':
 
             error_reporting(E_ALL ^ E_STRICT);
@@ -118,7 +110,7 @@ else {
             $input = $_GET['input'];
             //Fetched Release information about a project
             $release_list = $rally->find('Release', "(Project.Name = \"{$input}\")", '', '');
-            $IterationList = $rally->find('Iteration', "(Project.Name = \"{$input}\")", '','');
+            $IterationList = $rally->find('Iteration', "(Project.Name = \"{$input}\")", '', '');
 
             //Counts the length of the Release_list array
             $release_list_count = count($release_list);
@@ -130,37 +122,33 @@ else {
 
                 $release_array[$x] = new stdClass();
                 $release_array[$x] = $release_list[$x]['_refObjectName'];
-
             }
             $release_array[$release_list_count] = "All";
             array_unshift($release_array, "No Release");
             // Sort Releases Array alphabetically
             array_multisort($release_array);
-            
+
             // Count the length of the Iteration list array 
             $IterationCount = count($IterationList);
-            
+
             // Inti. an array variable
             $IterationArray = array();
-            
+
             //Creating object and getting only Iteration names 
-            for ($i=0; $i <$IterationCount; $i++){
+            for ($i = 0; $i < $IterationCount; $i++) {
                 $IterationArray[$i] = new stdClass();
                 $IterationArray[$i] = $IterationList[$i]['_refObjectName'];
             }
-            
+
             // Add All Value to Iteration Array 
             $IterationArray[$IterationCount] = "All";
-            
+
             // Sort Releases Array alphabetically
             array_multisort($IterationArray);
-            
+
             //$final11=json_encode($release_array);
             //$output = array('data' => $release_array);
-
-
             //OwnerList
-
             //Fetching all projects
             $proj_list = $rally->find('Project', '', '', 'true');
             $p = count($proj_list);
@@ -181,8 +169,8 @@ else {
                 $List[$i] = $Glob_owner['Results'][$i]['DisplayName'];
             }
             //Sort the array of owner lists alphabetically
-                array_multisort($List);
-                array_unshift($List, "No Owner");
+            array_multisort($List);
+            array_unshift($List, "No Owner");
             //
             //Finding specific user
             $specific_user = array();
@@ -191,7 +179,6 @@ else {
                 if ($Glob_owner['Results'][$i]['EmailAddress'] == $username) {
                     $specific_user = $Glob_owner['Results'][$i]['DisplayName'];
                 }
-
             }
 
             //Send Both lists
@@ -204,22 +191,21 @@ else {
             echo json_encode($output);
 
             break;
-            //Asking for a Rally Tree of Releases in Rally
+        //Asking for a Rally Tree of Releases in Rally
         case 'treeData':
             $projname = $_GET['project'];
             $releasename = $_GET['release'];
             $Iteration = $_GET['iteration'];
             $ReleaseName = $releasename;
-            $AllUserStories = $rally->find('userstory', "(Project.Name = \"{$projname}\")",
-                    '', 'Release,ScheduleState,Iteration,HasParent,Parent,c_ArchitecturalTopicID');
+            $AllUserStories = $rally->find('userstory', "(Project.Name = \"{$projname}\")", '', 'Release,ScheduleState,Iteration,HasParent,Parent,c_ArchitecturalTopicID');
             $ReleasesArray = array();
             $FinalArray = array();
-            $FinalArrayWithObject = array(); 
+            $FinalArrayWithObject = array();
             $ShortAllStories = array();
             $Map = array();
             $ReleasesCounter = 0;
-            for ($i=0; $i<count($AllUserStories); $i++){
-                if (($releasename == "All" && $Iteration == null) || ($releasename == "All" && $Iteration == "All")){
+            for ($i = 0; $i < count($AllUserStories); $i++) {
+                if (($releasename == "All" && $Iteration == null) || ($releasename == "All" && $Iteration == "All")) {
                     $FinalArrayWithObject[$i] = new stdClass();
                     $FinalArrayWithObject[$i]->id = $AllUserStories[$i]['_refObjectUUID'];
                     $FinalArrayWithObject[$i]->parent = $AllUserStories[$i]['Parent']['_refObjectUUID'];
@@ -229,7 +215,7 @@ else {
                     $FinalArrayWithObject[$i]->TopicID = $AllUserStories[$i]['c_ArchitecturalTopicID'];
                     $FinalArrayWithObject[$i]->Iteration = $AllUserStories[$i]['Iteration']['_refObjectName'];
                     $FinalArrayWithObject[$i]->has = $AllUserStories[$i]['HasParent'];
-                    if($FinalArrayWithObject[$i]->parent == null){
+                    if ($FinalArrayWithObject[$i]->parent == null) {
                         $FinalArrayWithObject[$i]->parent = '#';
                     }
                     if ($FinalArrayWithObject[$i]->Blocked == 1) {
@@ -254,10 +240,8 @@ else {
                             $FinalArrayWithObject[$i]->icon = "assets/img/icon_Accepted.png";
                         }
                     }
-                    
-                }
-                elseif ($releasename != null && $Iteration != null && $releasename != "All" && $Iteration != "All"){
-                    if ($AllUserStories[$i]['Release']['_refObjectName'] == $ReleaseName && $AllUserStories[$i]['Iteration']['_refObjectName'] == $Iteration){
+                } elseif ($releasename != null && $Iteration != null && $releasename != "All" && $Iteration != "All") {
+                    if ($AllUserStories[$i]['Release']['_refObjectName'] == $ReleaseName && $AllUserStories[$i]['Iteration']['_refObjectName'] == $Iteration) {
                         $Map[] = $AllUserStories[$i]['_refObjectUUID'];
                         $ReleasesArray[$ReleasesCounter]['id'] = $AllUserStories[$i]['_refObjectUUID'];
                         $ReleasesArray[$ReleasesCounter]['parent'] = $AllUserStories[$i]['Parent']['_refObjectUUID'];
@@ -267,9 +251,8 @@ else {
                         $ReleasesArray[$ReleasesCounter]['TopicID'] = $AllUserStories[$i]['c_ArchitecturalTopicID'];
                         $ReleasesArray[$ReleasesCounter]['Iteration'] = $AllUserStories[$i]['Iteration']['_refObjectName'];
                         $ReleasesArray[$ReleasesCounter]['has'] = $AllUserStories[$i]['HasParent'];
-                        $ReleasesCounter++;   
-                    }
-                    else{
+                        $ReleasesCounter++;
+                    } else {
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['id'] = $AllUserStories[$i]['_refObjectUUID'];
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['parent'] = $AllUserStories[$i]['Parent']['_refObjectUUID'];
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['text'] = $AllUserStories[$i]['_refObjectName'];
@@ -280,10 +263,8 @@ else {
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['has'] = $AllUserStories[$i]['HasParent'];
                         //$ShortAllStoriesCounter++;
                     }
-                    
-                }
-                elseif (($releasename != null && $Iteration == null) || ($releasename != null && $Iteration == "All")){
-                    if ($AllUserStories[$i]['Release']['_refObjectName'] == $ReleaseName){
+                } elseif (($releasename != null && $Iteration == null) || ($releasename != null && $Iteration == "All")) {
+                    if ($AllUserStories[$i]['Release']['_refObjectName'] == $ReleaseName) {
                         $Map[] = $AllUserStories[$i]['_refObjectUUID'];
                         $ReleasesArray[$ReleasesCounter]['id'] = $AllUserStories[$i]['_refObjectUUID'];
                         $ReleasesArray[$ReleasesCounter]['parent'] = $AllUserStories[$i]['Parent']['_refObjectUUID'];
@@ -293,9 +274,8 @@ else {
                         $ReleasesArray[$ReleasesCounter]['TopicID'] = $AllUserStories[$i]['c_ArchitecturalTopicID'];
                         $ReleasesArray[$ReleasesCounter]['Iteration'] = $AllUserStories[$i]['Iteration']['_refObjectName'];
                         $ReleasesArray[$ReleasesCounter]['has'] = $AllUserStories[$i]['HasParent'];
-                        $ReleasesCounter++;   
-                    }
-                    else{
+                        $ReleasesCounter++;
+                    } else {
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['id'] = $AllUserStories[$i]['_refObjectUUID'];
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['parent'] = $AllUserStories[$i]['Parent']['_refObjectUUID'];
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['text'] = $AllUserStories[$i]['_refObjectName'];
@@ -305,9 +285,8 @@ else {
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['Iteration'] = $AllUserStories[$i]['Iteration']['_refObjectName'];
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['has'] = $AllUserStories[$i]['HasParent'];
                     }
-                }
-                elseif (($Iteration != null && $releasename == null) || ($Iteration != null && $releasename == "All")){
-                    if ($AllUserStories[$i]['Iteration']['_refObjectName'] == $Iteration){
+                } elseif (($Iteration != null && $releasename == null) || ($Iteration != null && $releasename == "All")) {
+                    if ($AllUserStories[$i]['Iteration']['_refObjectName'] == $Iteration) {
                         $Map[] = $AllUserStories[$i]['_refObjectUUID'];
                         $ReleasesArray[$ReleasesCounter]['id'] = $AllUserStories[$i]['_refObjectUUID'];
                         $ReleasesArray[$ReleasesCounter]['parent'] = $AllUserStories[$i]['Parent']['_refObjectUUID'];
@@ -317,9 +296,8 @@ else {
                         $ReleasesArray[$ReleasesCounter]['TopicID'] = $AllUserStories[$i]['c_ArchitecturalTopicID'];
                         $ReleasesArray[$ReleasesCounter]['Iteration'] = $AllUserStories[$i]['Iteration']['_refObjectName'];
                         $ReleasesArray[$ReleasesCounter]['has'] = $AllUserStories[$i]['HasParent'];
-                        $ReleasesCounter++;   
-                    }
-                    else{
+                        $ReleasesCounter++;
+                    } else {
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['id'] = $AllUserStories[$i]['_refObjectUUID'];
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['parent'] = $AllUserStories[$i]['Parent']['_refObjectUUID'];
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['text'] = $AllUserStories[$i]['_refObjectName'];
@@ -330,34 +308,32 @@ else {
                         $ShortAllStories[$AllUserStories[$i]['_refObjectUUID']]['has'] = $AllUserStories[$i]['HasParent'];
                         //$ShortAllStoriesCounter++;
                     }
-                    
                 }
             }
-            
-            if (count($AllUserStories) == 0){
+
+            if (count($AllUserStories) == 0) {
                 $var = "No User stories";
                 $output = array('data' => $var);
-                echo json_encode($output);  
-            }
-            elseif (count($FinalArrayWithObject) == count($AllUserStories)){
+                echo json_encode($output);
+            } elseif (count($FinalArrayWithObject) == count($AllUserStories)) {
                 $output = array('data' => $FinalArrayWithObject);
                 echo json_encode($output);
-            }else{
+            } else {
                 $FinalArray = $ReleasesArray;
                 $Counter = count($FinalArray);
-                for ($i=0; $i<$Counter; $i++){
-                    if ($FinalArray[$i]['parent'] != "" && $FinalArray[$i]['has'] == 1){
-                        if (!in_array($FinalArray[$i]['parent'],$Map)){
-                            $Map[] = $FinalArray[$i]['parent']; 
-                            $FinalArray[] = array("id"=>$ShortAllStories[$FinalArray[$i]['parent']]['id'],
-                                                  "parent"=>$ShortAllStories[$FinalArray[$i]['parent']]['parent'],
-                                                  "text"=>$ShortAllStories[$FinalArray[$i]['parent']]['text'],
-                                                  "icon"=>$ShortAllStories[$FinalArray[$i]['parent']]['icon'],
-                                                  "Blocked"=>$ShortAllStories[$FinalArray[$i]['parent']]['Blocked'],
-                                                  "TopicID"=>$ShortAllStories[$FinalArray[$i]['parent']]['TopicID'],
-                                                  "Iteration"=>$ShortAllStories[$FinalArray[$i]['parent']]['Iteration'],
-                                                  "has"=>$ShortAllStories[$FinalArray[$i]['parent']]['has']);
-                            $Counter++; 
+                for ($i = 0; $i < $Counter; $i++) {
+                    if ($FinalArray[$i]['parent'] != "" && $FinalArray[$i]['has'] == 1) {
+                        if (!in_array($FinalArray[$i]['parent'], $Map)) {
+                            $Map[] = $FinalArray[$i]['parent'];
+                            $FinalArray[] = array("id" => $ShortAllStories[$FinalArray[$i]['parent']]['id'],
+                                "parent" => $ShortAllStories[$FinalArray[$i]['parent']]['parent'],
+                                "text" => $ShortAllStories[$FinalArray[$i]['parent']]['text'],
+                                "icon" => $ShortAllStories[$FinalArray[$i]['parent']]['icon'],
+                                "Blocked" => $ShortAllStories[$FinalArray[$i]['parent']]['Blocked'],
+                                "TopicID" => $ShortAllStories[$FinalArray[$i]['parent']]['TopicID'],
+                                "Iteration" => $ShortAllStories[$FinalArray[$i]['parent']]['Iteration'],
+                                "has" => $ShortAllStories[$FinalArray[$i]['parent']]['has']);
+                            $Counter++;
                         }
                         $FinalArrayWithObject[$i] = new stdClass();
                         $FinalArrayWithObject[$i]->id = $FinalArray[$i]['id'];
@@ -368,7 +344,7 @@ else {
                         $FinalArrayWithObject[$i]->TopicID = $FinalArray[$i]['TopicID'];
                         $FinalArrayWithObject[$i]->Iteration = $FinalArray[$i]['Iteration'];
                         $FinalArrayWithObject[$i]->has = $FinalArray[$i]['has'];
-                        if($FinalArrayWithObject[$i]->parent == null){
+                        if ($FinalArrayWithObject[$i]->parent == null) {
                             $FinalArrayWithObject[$i]->parent = '#';
                         }
                         if ($FinalArrayWithObject[$i]->Blocked == 1) {
@@ -393,8 +369,7 @@ else {
                                 $FinalArrayWithObject[$i]->icon = "assets/img/icon_Accepted.png";
                             }
                         }
-                    }
-                    else{
+                    } else {
                         $FinalArrayWithObject[$i] = new stdClass();
                         $FinalArrayWithObject[$i]->id = $FinalArray[$i]['id'];
                         $FinalArrayWithObject[$i]->parent = $FinalArray[$i]['parent'];
@@ -404,7 +379,7 @@ else {
                         $FinalArrayWithObject[$i]->TopicID = $FinalArray[$i]['TopicID'];
                         $FinalArrayWithObject[$i]->Iteration = $FinalArray[$i]['Iteration'];
                         $FinalArrayWithObject[$i]->has = $FinalArray[$i]['has'];
-                        if($FinalArrayWithObject[$i]->parent == null){
+                        if ($FinalArrayWithObject[$i]->parent == null) {
                             $FinalArrayWithObject[$i]->parent = '#';
                         }
                         if ($FinalArrayWithObject[$i]->Blocked == 1) {
@@ -434,7 +409,7 @@ else {
                 $output = array('data' => $FinalArrayWithObject);
                 echo json_encode($output);
             }
-            
+
             break;
 
         case 'metadata':
@@ -467,15 +442,15 @@ else {
         case 'updatearch':
 
             /*
-            $userstory_newtopicID = json_decode($input);
-            $userStoryId =  $userstory_newtopicID->userstory;
-            $newarchtopicID = $userstory_newtopicID->newtopicID;     
-            $userstoryinformation= $rally->get('userstory',$userStoryId);
-            $temptopicid=$userstoryinformation['c_ArchitecturalTopicID'];
-            $comma=";";
-            $finaltopicid2=$temptopicid.$comma.$newarchtopicID;
-            $result = $rally->update('userstory', $userStoryId, array('c_ArchitecturalTopicID' => $finaltopicid2));
-            */
+              $userstory_newtopicID = json_decode($input);
+              $userStoryId =  $userstory_newtopicID->userstory;
+              $newarchtopicID = $userstory_newtopicID->newtopicID;
+              $userstoryinformation= $rally->get('userstory',$userStoryId);
+              $temptopicid=$userstoryinformation['c_ArchitecturalTopicID'];
+              $comma=";";
+              $finaltopicid2=$temptopicid.$comma.$newarchtopicID;
+              $result = $rally->update('userstory', $userStoryId, array('c_ArchitecturalTopicID' => $finaltopicid2));
+             */
 
             break;
 
@@ -501,15 +476,15 @@ else {
         case 'updateNode':
 
             /*  $ProjectName = "Spark Sandbox";
-            $OwnerName = 'Chinta Rachina';
-            $UserID = "e1d068f2-63c9-4c56-a9de-d19684672488";
-            $Name = "He Man";
-            $Description = "";
-            $ArchitecturalTopicID = "gfj689-bjdkldsdgb-dfjsm";
-            $SchedulePlan_Est = "";
-            $ScheduleState = "";
-            $IterationName = "";
-            $ReleaseName = ""; */
+              $OwnerName = 'Chinta Rachina';
+              $UserID = "e1d068f2-63c9-4c56-a9de-d19684672488";
+              $Name = "He Man";
+              $Description = "";
+              $ArchitecturalTopicID = "gfj689-bjdkldsdgb-dfjsm";
+              $SchedulePlan_Est = "";
+              $ScheduleState = "";
+              $IterationName = "";
+              $ReleaseName = ""; */
             $ProjectName = $_GET['project'];
             $OwnerName = $_GET['owner'];
             $UserID = $_GET['newNodeID'];
@@ -523,7 +498,6 @@ else {
             //Fetches info. about the user story
             $User_Details = $rally->get('userstory', "/{$UserID}");
             //echo "<Pre>";print_r($User_Details);echo "</Pre>";
-
             //Checks whether the Name value passed is null or not
             if ($Name != '') {
                 if ($User_Details['_refObjectName'] != $Name) {
@@ -537,18 +511,14 @@ else {
             // if ($Description != '') {
             if ($User_Details['Description'] != $Description) {
                 $update['Description'] = "$Description";
-
-
             }
             // }
-
             //Checks whether the Arch.Topic ID value passed is null or not
             //  if ($ArchitecturalTopicID != '') {
             if ($User_Details['c_ArchitecturalTopicID'] != $ArchitecturalTopicID) {
                 $update['c_ArchitecturalTopicID'] = "$ArchitecturalTopicID";
             }
             //}
-
             //Checks whether the Schedule state value passed is null or not
             if ($ScheduleState != '') {
                 if ($User_Details['ScheduleState'] != $ScheduleState) {
@@ -603,10 +573,10 @@ else {
             }
 
             $rally->update('userstory', $UserID, $update);
-            
+
             $blocked = $User_Details['Blocked'];
-            $icon=$ScheduleState;
-            
+            $icon = $ScheduleState;
+
             if ($blocked == 1) {
                 if ($icon == "In-Progress") {
                     $icon = "assets/img/icon_In-Progress_Blocked.png";
@@ -638,7 +608,7 @@ else {
                     'icon' => $icon,
                     'Blocked' => $blocked));
             echo (json_encode($output));
-            
+
             break;
 
 
@@ -775,7 +745,6 @@ else {
 
             if ($Parent2 == "#") {
                 $Parent1 = "null";
-
             } else {
                 //Fetches Information about new parent from rally
                 $Parent2_UserStory = $rally->get('userstory', $Parent2);
@@ -785,10 +754,10 @@ else {
 
             //Udpates the User story parent with the new parent in the rally
             $Updated_UserStory = $rally->update('userstory', $userStoryId, array('Parent' =>
-                    $Parent1));
+                $Parent1));
 
             echo "User Story ID: ", $userStoryId, "New Parent ID: ", $Parent2, "Parent ?: ",
-                $Parent1;
+            $Parent1;
 
             break;
 
@@ -802,8 +771,7 @@ else {
             $variable = $ProjectDetail['_refObjectName'];
 
             //Fetches Iteration details using project name
-            $Iteration_list = $rally->find('Iteration', "(Project.Name = \"{$variable}\")",
-                '', '');
+            $Iteration_list = $rally->find('Iteration', "(Project.Name = \"{$variable}\")", '', '');
 
             //Fetching Iteration Name & Iteration ID
             for ($i = 0; $i < count($Iteration_list); $i++) {
@@ -813,7 +781,7 @@ else {
                 $Iteration[$i]->IternationID = $Iteration_list[$i]['_refObjectUUID'];
             }
             //Encoding  the array into JSON
-			$output = $iteration;
+            $output = $iteration;
             echo json_encode($output);
 
             break;
@@ -824,101 +792,90 @@ else {
             unset($_SESSION['pass']);
 
             break;
-			
-			case 'EQI':
+        case 'boxcarChildren':  //test
+            //Unsetting the session variables
+            $file = 'boxcarChildren_1.json';
+            if (file_exists($file)) {
+                header('Content-Type: application/json');
+                header('Content-Disposition: attachment; filename=' . basename($file));
+                header('Content-Length: ' . filesize($file));
+                readfile($file);
+                exit;
+            }
+            break;
+        case 'EQI':
 
 
-                /*
-                $input = "LSIP1234567890 – P0";
-                $UserName = rtrim($input, " – P0");
+            /*
+              $input = "LSIP1234567890 – P0";
+              $UserName = rtrim($input, " – P0");
 
 
-                $ProjectName = "Spark Sandbox";
+              $ProjectName = "Spark Sandbox";
 
-                $userstories_Epic = $rally->find('userstory', "(Name contains   \"$UserName\")",
-                '', 'ScheduleState,Iteration,Children,DirectChildrenCount,Release,PlanEstimate');
+              $userstories_Epic = $rally->find('userstory', "(Name contains   \"$UserName\")",
+              '', 'ScheduleState,Iteration,Children,DirectChildrenCount,Release,PlanEstimate');
 
-                print_r($userstories_Epic);
-                die();
-                $plannd_userStories = $userstories_Epic[0]['PlanEstimate'];
+              print_r($userstories_Epic);
+              die();
+              $plannd_userStories = $userstories_Epic[0]['PlanEstimate'];
 
-                $ID = $userstories_Epic[0]['_refObjectUUID'];*/
-
-
-                $ID = $_GET['input'];
-				
-                $userstories_Epic = $rally->get('HierarchicalRequirement', "/$ID");
-				
-				$c = 0;
-                $child=array();
-                $plannd_userStories = $userstories_Epic['PlanEstimate'];
-
-                $result = $rally->get2('HierarchicalRequirement', "/{$ID}");
-
-                $b = count($Glob_owner['Results']);
-
-                for ($x = 0; $x < $b; $x++) {
-                    $child[$c] = $Glob_owner['Results'][$x];
-                    $c++;
-                }
-
-                $FinalArray = array();
-                $FinalArray = $child;
-                $total_count = 0;
-                $Counter = count($Glob_owner['Results']);
-
-                for ($y = 0; $y < $Counter; $y++) {
-
-                    if ($FinalArray[$y]['DirectChildrenCount'] != 0) {
-                        $I = $FinalArray[$y]['_refObjectUUID'];
-                        $result = $rally->get2('HierarchicalRequirement', "/$I");
-
-                        for ($i = 0; $i < count($Glob_owner['Results']); $i++) {
-                            $FinalArray[] = $Glob_owner['Results'][$i];
-                        }
-
-                        $Counter = 0;
-                        $Counter = count($FinalArray);
+              $ID = $userstories_Epic[0]['_refObjectUUID']; */
 
 
+            $ID = $_GET['input'];
+
+            $userstories_Epic = $rally->get('HierarchicalRequirement', "/$ID");
+
+            $c = 0;
+            $child = array();
+            $plannd_userStories = $userstories_Epic['PlanEstimate'];
+
+            $result = $rally->get2('HierarchicalRequirement', "/{$ID}");
+
+            $b = count($Glob_owner['Results']);
+
+            for ($x = 0; $x < $b; $x++) {
+                $child[$c] = $Glob_owner['Results'][$x];
+                $c++;
+            }
+
+            $FinalArray = array();
+            $FinalArray = $child;
+            $total_count = 0;
+            $Counter = count($Glob_owner['Results']);
+
+            for ($y = 0; $y < $Counter; $y++) {
+
+                if ($FinalArray[$y]['DirectChildrenCount'] != 0) {
+                    $I = $FinalArray[$y]['_refObjectUUID'];
+                    $result = $rally->get2('HierarchicalRequirement', "/$I");
+
+                    for ($i = 0; $i < count($Glob_owner['Results']); $i++) {
+                        $FinalArray[] = $Glob_owner['Results'][$i];
                     }
 
+                    $Counter = 0;
+                    $Counter = count($FinalArray);
                 }
+            }
 
 
-                for ($x = 0; $x < count($FinalArray); $x++) {
-                    if ($FinalArray[$x]['DirectChildrenCount'] == 0 && $FinalArray[$x]['ScheduleState'] ==
+            for ($x = 0; $x < count($FinalArray); $x++) {
+                if ($FinalArray[$x]['DirectChildrenCount'] == 0 && $FinalArray[$x]['ScheduleState'] ==
                         'Accepted') {
-                        $total_count = $total_count + $FinalArray[$x]['PlanEstimate'];
-                    }
+                    $total_count = $total_count + $FinalArray[$x]['PlanEstimate'];
+                }
+            }
 
-                }
-                
-                if ($plannd_userStories== null)
-                {
-                    $plannd_userStories='0';
-                    
-                }
-                
-				echo json_encode((array('data' =>array('Planned' => $plannd_userStories, 'Accepted' => $total_count))));
-				
-				break;
+            if ($plannd_userStories == null) {
+                $plannd_userStories = '0';
+            }
+
+            echo json_encode((array('data' => array('Planned' => $plannd_userStories, 'Accepted' => $total_count))));
+
+            break;
     }
 }
 //   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ?>

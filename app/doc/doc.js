@@ -1,14 +1,13 @@
 'use strict';
 
-angular.module('spark.doc', ['ngRoute'])
+angular.module('spark.doc', ['ngRoute', 'mgcrea.ngStrap'])
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/doc', {
-    templateUrl: 'doc/doc.html',
-    controller: 'DocController'
-  });
-}])
+        .config(['$routeProvider', function ($routeProvider) {
+                $routeProvider.when('/doc', {
+                    templateUrl: 'doc/README.html',
+                    controller: 'DocController'
+                });
+            }])
 
-.controller('DocController', [function() {
-
-}]);
+        .controller('DocController', ['$scope', function ($scope) {
+            }]);
