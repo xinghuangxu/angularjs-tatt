@@ -1,10 +1,8 @@
 <!-- Data Field -->	
 <div>
     <div controller="main" class="body">
-
         <div class="dual">
             <form>
-
                 <label>Project Name:&nbsp;</label><br />
                 <select class="btn" style="border:1px solid silver;" ng-model="projectChosen" data-html="1" ng-options="project for project in projectList" ng-change="getRelease()" ng-disabled="!projectList">
                     <option value="" disabled>Choose Project</option>
@@ -54,63 +52,60 @@
             <div id="treeALM"></div>
 
             <script>
-                        $(function () {
-                            $('#treeALM').jstree({
-                                plugins: ["themes", "search", "dnd", "crrm", "ui"],
-                                core: {
-                                    multiple: false,
-                                    themes: {
-                                        "theme": "default",
-                                        "icons": true,
-                                        "dots": false
-                                    },
-                                    data: [{text: 'ALM: Node 1 - Parent 1', id: '3', parent: '#'}, {text: 'ALM: Node 2 - Parent 2', id: '4', parent: '#'}],
-                                    dnd: {
-                                        "copy_modifier": true
-                                    },
-                                    check_callback: function (op, node, par, pos, more) {
-                                        /*console.log("op2: ", op);
-                                         console.log('node2: ', node);
-                                         console.log('par2: ', par);
-                                         console.log('pos2: ', pos);
-                                         console.log('more2: ', more);
-                                         console.log('----------------------------------------------------------------------------------------------');*/
-                                        if ((op == 'move_node' || op == 'copy_node') && more.is_multi == true && par.id == '#') {
-                                            return false;
-                                        } else {
-                                            return true;
+                                $(function () {
+                                    $('#treeALM').jstree({
+                                        plugins: ["themes", "search", "dnd", "crrm", "ui"],
+                                        core: {
+                                            multiple: false,
+                                            themes: {
+                                                "theme": "default",
+                                                "icons": true,
+                                                "dots": false
+                                            },
+                                            data: [{text: 'ALM: Node 1 - Parent 1', id: '3', parent: '#'}, {text: 'ALM: Node 2 - Parent 2', id: '4', parent: '#'}],
+                                            dnd: {
+                                                "copy_modifier": true
+                                            },
+                                            check_callback: function (op, node, par, pos, more) {
+                                                /*console.log("op2: ", op);
+                                                 console.log('node2: ', node);
+                                                 console.log('par2: ', par);
+                                                 console.log('pos2: ', pos);
+                                                 console.log('more2: ', more);
+                                                 console.log('----------------------------------------------------------------------------------------------');*/
+                                                if ((op == 'move_node' || op == 'copy_node') && more.is_multi == true && par.id == '#') {
+                                                    return false;
+                                                } else {
+                                                    return true;
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                            });
+                                    });
 
-                            $('#treeALM').bind('copy_node.jstree', function (e, data) {
-                                if (data.is_multi == true) {
-                                    parentNodeInfo = $('#treeALM').jstree(true).get_node(data.parent);
-                                    console.log('----------------------------------------------------------------------------------------------------------------------------------------');
-                                    console.log("Data Collection: Destination Tree");
-                                    console.log("Full Data: ", data);
-                                    console.log("Source Tree - Node Name: ", data.original.text);
-                                    console.log("Source Tree - ID: ", data.original.id);
-                                    console.log("Source Tree - Meta Data: ", data.original.original.TopicID);
-                                    console.log("Destination Tree - Node Name: ", parentNodeInfo.text);
-                                    console.log("Destination Tree - ID: ", data.parent);
-                                    console.log('----------------------------------------------------------------------------------------------------------------------------------------');
-                                    //console.log($('#treeALM').jstree(true).get_node(data.node.id));
-                                    $('#treeALM').jstree("delete_node", $('#treeALM').jstree(true).get_node(data.node.id));
+                                    $('#treeALM').bind('copy_node.jstree', function (e, data) {
+                                        if (data.is_multi == true) {
+                                            parentNodeInfo = $('#treeALM').jstree(true).get_node(data.parent);
+                                            console.log('----------------------------------------------------------------------------------------------------------------------------------------');
+                                            console.log("Data Collection: Destination Tree");
+                                            console.log("Full Data: ", data);
+                                            console.log("Source Tree - Node Name: ", data.original.text);
+                                            console.log("Source Tree - ID: ", data.original.id);
+                                            console.log("Source Tree - Meta Data: ", data.original.original.TopicID);
+                                            console.log("Destination Tree - Node Name: ", parentNodeInfo.text);
+                                            console.log("Destination Tree - ID: ", data.parent);
+                                            console.log('----------------------------------------------------------------------------------------------------------------------------------------');
+                                            //console.log($('#treeALM').jstree(true).get_node(data.node.id));
+                                            $('#treeALM').jstree("delete_node", $('#treeALM').jstree(true).get_node(data.node.id));
 
-                                }
-                            })
+                                        }
+                                    })
 
 
-                        });
+                                });
             </script>
-
         </div>
-
     </div>
 
-
     <!-- Buttonbar popover -->
-    <div ng-include="rally/partial/_popover.html" ng-controller="popoverCtrl"></div>
+    <div ng-include="'rally/partial/_popover.html'"></div>
 </div>

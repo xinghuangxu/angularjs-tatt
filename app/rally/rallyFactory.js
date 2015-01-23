@@ -1,6 +1,14 @@
 //factory for sharing data between controllers
 rally.factory('myAuthentication', function () {
-    return{loginView: true, dataView: false, actionNode: null, deleteSuccess: false, editInfo: {nodeID: null, name: null, archID: null, iteration: null, icon: null, blocked: null}, addNode: {nodeID: null, name: null, archID: null, iteration: null, icon: null, blocked: null}, selectedNode: {nodeID: null, children: null, name: null}};
+    return{
+        loginView: true,
+        dataView: false,
+        actionNode: null,
+        deleteSuccess: false,
+        editInfo: {nodeID: null, name: null, archID: null, iteration: null, icon: null, blocked: null},
+        addNode: {nodeID: null, name: null, archID: null, iteration: null, icon: null, blocked: null},
+        selectedNode: {nodeID: null, children: null, name: null}
+    };
 });
 
 //factory service that calls to the php file (Old method used $http dependency)

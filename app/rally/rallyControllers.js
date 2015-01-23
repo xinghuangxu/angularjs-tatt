@@ -6,7 +6,6 @@ rally.controller('myLogin', function ($scope, dataService, myAuthentication, $al
     var timeoutCount = 0;
     var maxTimeoutAttempts = 3;
     
-
     //Function to automatically check stored login credentials
     $scope.autoLogin = function () {
         //Service Call to check if authentication credentials are stored for use for automatic login
@@ -20,7 +19,7 @@ rally.controller('myLogin', function ($scope, dataService, myAuthentication, $al
                     }
                     else {
                         if (val.data == 'exists') {
-//					myAuthentication.loginView = false;
+                            myAuthentication.loginView = false;
                             $location.path("/rally/main");
                             myAuthentication.dataView = true;
                             timeoutCount = 0;
@@ -105,7 +104,7 @@ rally.controller('myLogin', function ($scope, dataService, myAuthentication, $al
 });
 
 //Data fields controller
-rally.controller("main", function ($scope, dataService, myAuthentication, $alert) {
+rally.controller("main", function ($scope, $location,dataService, myAuthentication, $alert) {
     //Pulls in variables from factory for use
     $scope.authentication = myAuthentication;
     //Array to store all actions that can be undone
@@ -452,6 +451,7 @@ rally.controller("main", function ($scope, dataService, myAuthentication, $alert
                         delete $scope.projectList;
                         delete $scope.projectChosen;
                         delete $scope.releaseChosen;
+                        $location.path("/rally");
                         myAuthentication.loginView = true;
                         myAuthentication.dataView = false;
                         timeoutCount = 0;
@@ -481,6 +481,7 @@ rally.controller("main", function ($scope, dataService, myAuthentication, $alert
                             delete $scope.projectList;
                             delete $scope.projectChosen;
                             delete $scope.releaseChosen;
+                            $location.path("/rally");
                             myAuthentication.loginView = true;
                             myAuthentication.dataView = false;
                             break;
@@ -540,7 +541,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
         //console.log("PCtrl Node ID: ", $scope.newNodeID);
 
         var addModal = $modal({
-            contentTemplate: 'addForm.html',
+            contentTemplate: 'rally/partial/_addForm.html',
             scope: $scope,
             show: true
         });
@@ -657,7 +658,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
                         $scope.modalData.description = $sce.trustAsHtml(val.data.description);
                         console.log(val.data);
                         var myModal = $modal({
-                            contentTemplate: 'modal.html',
+                            contentTemplate: 'rally/partial/_modal.html',
                             scope: $scope,
                             show: true
                         });
@@ -819,7 +820,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
                 )
 
                 var editModal = $modal({
-                    contentTemplate: 'editForm.html',
+                    contentTemplate: 'rally/partial/_editForm.html',
                     scope: $scope,
                     show: true
                 });
@@ -930,7 +931,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
         if (!$scope.children) {
             //Modal to display confirmation message
             var deleteModal = $modal({
-                contentTemplate: 'deleteModal.html',
+                contentTemplate: 'rally/partial/_deleteModal.html',
                 scope: $scope,
                 show: true
             });
