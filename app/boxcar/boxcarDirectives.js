@@ -51,7 +51,7 @@ boxcar.directive('boxcarJstree', [ '$templateCache', '$compile', function ( $tem
                     })
 
                     //Loads the popover template
-                    var popoverContent = $templateCache.get("popover.html");
+                    var popoverContent = $templateCache.get("boxcarPopover.html");
                     //Gives the popover a controller
                     var finalContent = $compile("<div>" + popoverContent + "</div>")(scope);
                     //Options of popover
