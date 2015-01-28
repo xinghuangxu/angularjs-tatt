@@ -28,37 +28,37 @@ boxcar.factory('boxcarContainer', function () {
         this.attrs = {
             Qual: data['qual'],
             Impact: data['impact'],
-            Ownership:data['ownership'],
+            Ownership: data['ownership'],
             Scope: data['scope'],
             Risk: data['risk']
         };
     }
-    Strategy.prototype.toTreeFormat = function (treeArray, classifier) {
-        treeArray.push({
+    Strategy.prototype.toTreeFormat = function (treeHash, classifier) {
+        treeHash[this.id] = {
             id: this.id,
-            parent: classifier ? (this.parent + this[classifier]) : this.parent,
+            parent: classifier ? this[classifier] : this.parent,
             text: this.text,
             icon: this.icon
-        });
+        };
         for (var prop in this.attrs) {
             if (this.attrs.hasOwnProperty(prop)) {
-                treeArray.push({
+                treeHash[this.id + prop] = {
                     id: this.id + prop,
                     parent: this.id,
-                    text: prop+": "+this.attrs[prop],
+                    text: prop + ": " + this.attrs[prop],
                     icon: iconPath + "Attribute"
-                });
+                };
                 //this.attrs[prop];
             }
         }
-    }
+    };
     function PR(data) {
         var that = this;
         this.id = data['id'];
         this.parent = "#";
         this.text = data['type'] + ":" + data['id'] + ":" + data['title'];
         this.icon = "";
-
+        
         this.qual = {};
         this.impact = {};
         this.ownership = {};
@@ -74,28 +74,31 @@ boxcar.factory('boxcarContainer', function () {
             that.approach[data['approach']] = true;
         };
     }
-    PR.prototype.toTreeFormat = function (treeArray, classifier) {
-        treeArray.push({
-            id: this.id,
-            parent: this.parent,
-            text: this.text,
-            icon: this.icon
-        });
+    ;
+    PR.prototype.toTreeFormat = function (treeHash, classifier) {
         if (classifier) {
             for (var prop in this[classifier]) {
                 if (this[classifier].hasOwnProperty(prop)) {
-                    treeArray.push({
-                        id: this.id + prop,
-                        parent: this.id,
+                    //traverse a classifier name 'classifier' like: qual, impact, ownership or approach
+                    treeHash[prop] = {
+                        id: prop,
+                        parent: this.parent,
                         text: prop,
                         icon: ""
-                    });
+                    };
                 }
             }
+        } else {
+            treeHash[this.id] = {
+                id: this.id,
+                parent: this.parent,
+                text: this.text,
+                icon: this.icon
+            };
         }
         for (var prop in this.strategies) {
             if (this.strategies.hasOwnProperty(prop)) {
-                this.strategies[prop].toTreeFormat(treeArray, classifier);
+                this.strategies[prop].toTreeFormat(treeHash, classifier);
             }
         }
     };
@@ -110,10 +113,19 @@ boxcar.factory('boxcarContainer', function () {
     }
 
     boxcarContainer.toTreeFormat = function (classificaitonField) {
-        var treeArray = [];
+        if(classificaitonField=="pr"){
+            classificaitonField="";
+        }
+        var treeHash = [];
         for (var prop in prs) {
             if (prs.hasOwnProperty(prop)) {
-                prs[prop].toTreeFormat(treeArray, classificaitonField);
+                prs[prop].toTreeFormat(treeHash, classificaitonField);
+            }
+        }
+        var treeArray = [];
+        for (var prop in treeHash) {
+            if (treeHash.hasOwnProperty(prop)) {
+                treeArray.push(treeHash[prop]);
             }
         }
         return treeArray;

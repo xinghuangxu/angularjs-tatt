@@ -26,7 +26,9 @@ var boxcar = angular.module('spark.boxcar', ['ngAnimate', 'ngSanitize', 'mgcrea.
                     );
                 };
                 $scope.getTreeData();
+                $scope.classifier="Pr";
                 $scope.sort = function (classifier) {
+                    $scope.classifier=classifier.charAt(0).toUpperCase() + classifier.slice(1);;
                     $scope.tree = boxcarContainer.toTreeFormat(classifier);
                 };
             }]);

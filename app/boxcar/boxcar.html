@@ -5,7 +5,7 @@
 </style>
 <div class="body">
     <div class="control">
-        <input type="button" value="None" ng-click="sort()">
+        <input type="button" value="PR" ng-click="sort('pr')">
         <input type="button" value="Qualification Area" ng-click="sort('qual')">
         <input type="button" value="Impact Area" ng-click="sort('impact')">
         <input type="button" value="Approach" ng-click="sort('approach')">
@@ -13,23 +13,19 @@
     </div>
     <form>
         <div>
+            <div>Classifier:  {{classifier}}</div>
             <b>Search:&nbsp;</b>
             <input type="text" id="treeSearch" value="" class="input" style="padding:4px; border-radius:4px; border:1px solid silver;" />
-
         </div>
     </form>
-
     <div>
         <form>
             <label>Allow Drag and Drop</label>
             <input type="checkbox" ng-change="editEnable();" ng-model="enabled" ng-init="enabled = false">
         </form>
     </div>
-
     <div ng-if="load" class="animate-if">  Loading...<img id="spinner" class="throbber" src="assets/img/throbber.gif"></div>
-
     <boxcar-jstree ng-model="tree"></boxcar-jstree>
-
     <script type="text/ng-template" id="boxcarPopover.html">
         <div ng-controller="popoverCtrl">
         <button tab-index="-1" type="button" class="btn-p btn-mini btn-p-default" ng-click="info()" data-title="User Story Info" data-trigger="hover" data-type="info" data-delay="300">
