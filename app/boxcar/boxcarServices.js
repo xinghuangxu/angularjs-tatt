@@ -14,9 +14,10 @@ boxcar.factory('boxcarDataService', function ($resource) {
 
 boxcar.factory('boxcarContainer', function () {
     var boxcarContainer = {};
-    var prs = {};
+    var boxcarData = {};
+    var fileterList = ['qual', 'impact', 'ownership', 'approach'];
     var iconPath = "assets/img/strategy";
-    function Strategy(data) {
+    function Leaf(data) {
         this.id = data['tpid'];
         this.text = data['name'];
         this.icon = iconPath + data['type'];
@@ -33,93 +34,95 @@ boxcar.factory('boxcarContainer', function () {
             Risk: data['risk']
         };
     }
-    Strategy.prototype.toTreeFormat = function (treeHash, classifier) {
-        treeHash[this.id] = {
-            id: this.id,
-            parent: classifier ? this[classifier] : this.parent,
+    Leaf.prototype.toTreeFormat = function (treeHash, parent) {
+        var id = parent.id + this.id;
+        treeHash[id] = {
+            id: id,
+            parent: parent.id,
             text: this.text,
             icon: this.icon
         };
         for (var prop in this.attrs) {
             if (this.attrs.hasOwnProperty(prop)) {
-                treeHash[this.id + prop] = {
-                    id: this.id + prop,
-                    parent: this.id,
+                treeHash[id + prop] = {
+                    id: id + prop,
+                    parent: id,
                     text: prop + ": " + this.attrs[prop],
                     icon: iconPath + "Attribute"
                 };
-                //this.attrs[prop];
             }
         }
     };
-    function PR(data) {
+    function Node(data) {
         var that = this;
         this.id = data['id'];
         this.parent = "#";
-        this.text = data['type'] + ":" + data['id'] + ":" + data['title'];
+        this.text = data['text'];
         this.icon = "";
-        
-        this.qual = {};
-        this.impact = {};
-        this.ownership = {};
-        this.approach = {};
 
-        this.strategies = {};
-        this.addStrategy = function (data) {
-            data['parent'] = that.id;
-            that.strategies[data['tpid']] = new Strategy(data);
-            that.qual[data['qual']] = true;
-            that.impact[data['impact']] = true;
-            that.ownership[data['ownership']] = true;
-            that.approach[data['approach']] = true;
+        this.leafs = {};
+        this.add = function (leaf) {
+            that.leafs[leaf['id']] = leaf;
         };
     }
     ;
-    PR.prototype.toTreeFormat = function (treeHash, classifier) {
-        if (classifier) {
-            for (var prop in this[classifier]) {
-                if (this[classifier].hasOwnProperty(prop)) {
-                    //traverse a classifier name 'classifier' like: qual, impact, ownership or approach
-                    treeHash[prop] = {
-                        id: prop,
-                        parent: this.parent,
-                        text: prop,
-                        icon: ""
-                    };
-                }
-            }
-        } else {
-            treeHash[this.id] = {
-                id: this.id,
-                parent: this.parent,
-                text: this.text,
-                icon: this.icon
-            };
-        }
-        for (var prop in this.strategies) {
-            if (this.strategies.hasOwnProperty(prop)) {
-                this.strategies[prop].toTreeFormat(treeHash, classifier);
+    Node.prototype.toTreeFormat = function (treeHash) {
+        treeHash[this.id] = {
+            id: this.id,
+            parent: this.parent,
+            text: this.text,
+            icon: this.icon
+        };
+        for (var prop in this.leafs) {
+            if (this.leafs.hasOwnProperty(prop)) {
+                this.leafs[prop].toTreeFormat(treeHash, this);
             }
         }
     };
 
     function addChild(data) {
-        if (!prs[data['id']]) {
-            prs[data['id']] = new PR(data);
+
+        var pr = boxcarData['pr'];
+        if (!pr[data['id']]) {
+            pr[data['id']] = new Node({
+                id: data['id'],
+                text: data['type'] + ":" + data['id'] + ":" + data['title']
+            });
         }
         if (data['strategy']) {
-            prs[data['id']].addStrategy(data['strategy']);
+            var leaf = new Leaf(data['strategy']);
+            //add leaf to the pr list
+            pr[data['id']].add(leaf);
+            for (var index in fileterList) {
+                var attributeName = fileterList[index]; //qual, impact, approach
+                var storage= boxcarData[attributeName];
+                var attrValue=leaf[attributeName];
+                
+                var nameList = [];
+                if (attrValue.indexOf(',') > -1) {
+                    nameList = attrValue.split(',');
+                } else {
+                    nameList.push(attrValue);
+                }
+                for (var i in nameList) {
+                    var singleName = nameList[i].trim();
+                    if (!storage[singleName]) {
+                        storage[singleName] = new Node({
+                            id: attributeName + singleName,
+                            text: singleName
+                        });
+                    }
+                    storage[singleName].add(leaf);
+                }
+            }
         }
     }
 
     boxcarContainer.toTreeFormat = function (classificaitonField) {
-        if(classificaitonField=="pr"){
-            classificaitonField="";
-        }
         var treeHash = [];
-        for (var prop in prs) {
-            if (prs.hasOwnProperty(prop)) {
-                prs[prop].toTreeFormat(treeHash, classificaitonField);
+        for (var prop in boxcarData[classificaitonField]) {
+            if (boxcarData[classificaitonField].hasOwnProperty(prop)) {
+                boxcarData[classificaitonField][prop].toTreeFormat(treeHash);
             }
         }
         var treeArray = [];
@@ -132,7 +135,12 @@ boxcar.factory('boxcarContainer', function () {
     };
 
     boxcarContainer.create = function (source) {
-        prs = {};
+        boxcarData = {
+            pr: {}
+        };
+        for (var index in fileterList) {
+            boxcarData[fileterList[index]] = {};
+        }
         for (var i = 0; i < source.length; i++) {
             addChild(source[i]);
         }

@@ -121,7 +121,7 @@
       "strategy": {
          "type": "G",
          "name": "Log collection",
-         "tpid": "T:234234212:TDGSDFD:243236",
+         "tpid": "T:234234212:TDGSDFD:273236",
          "qual": "Serviceability",
          "impact": "CLI",
          "approach": "Unit Test",

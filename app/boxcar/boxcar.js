@@ -21,21 +21,27 @@ var boxcar = angular.module('spark.boxcar', ['ngAnimate', 'ngSanitize', 'mgcrea.
 
                                 $log.log("Tree Data: ", val);
                                 boxcarContainer.create(val);
-                                $scope.tree = boxcarContainer.toTreeFormat();
+                                $scope.tree = boxcarContainer.toTreeFormat('pr');
                             }
                     );
                 };
                 $scope.getTreeData();
-                $scope.classifier="Pr";
-                $scope.sort = function (classifier) {
-                    $scope.classifier=classifier.charAt(0).toUpperCase() + classifier.slice(1);;
-                    $scope.tree = boxcarContainer.toTreeFormat(classifier);
-                };
+                $scope.classifiers = [
+                    {"value": 'pr', "text": "PR"},
+                    {"value": 'qual', "text": "Qualification Area"},
+                    {"value": 'impact', "text": "Impact Area"},
+                    {"value": 'approach', "text": "Approach"},
+                    {"value": 'ownership', "text": "Ownership"}
+                ];
+                $scope.$watch('selectedClassifier', function (newValue, oldValue) {
+                    $scope.tree = boxcarContainer.toTreeFormat(newValue.value);
+                });
+                
             }]);
 
 
 //Controller for the popover	
-boxcar.controller("boxcarPopoverController", function ($scope, dataService, myAuthentication, $modal, $alert, $sce) {
+boxcar.controller("boxcarPopoverController", function ($scope) {
     //sets the submitted variable to false to reset the error visualizations
     //$scope.submitted = false;
 
