@@ -80,7 +80,6 @@ boxcar.factory('boxcarContainer', function () {
             }
         }
     };
-
     function addChild(data) {
 
         var pr = boxcarData['pr'];
@@ -118,7 +117,6 @@ boxcar.factory('boxcarContainer', function () {
             }
         }
     }
-
     boxcarContainer.toTreeFormat = function (classificaitonField) {
         var treeHash = [];
         for (var prop in boxcarData[classificaitonField]) {
@@ -134,7 +132,6 @@ boxcar.factory('boxcarContainer', function () {
         }
         return treeArray;
     };
-
     boxcarContainer.create = function (source) {
         boxcarData = {
             pr: {}
