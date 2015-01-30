@@ -1,7 +1,10 @@
 <?php
+session_start();
 
 //Calling PHP TOOLKIT functions
+include 'config.php';
 include 'phpkit_toolkit.php';
+
 
 //Calling Domain Availability functions
 //include 'DomainAvailability1.php';
@@ -15,7 +18,7 @@ include 'phpkit_toolkit.php';
 //}
 //else {
 //Starting the session for the authentication variables
-session_start();
+
 $_SESSION['AllUserStories'] = array();
 
 //Check the last activitiy or request on the page
@@ -69,7 +72,7 @@ else {
     $username = $_SESSION['user'];
     $password = $_SESSION['pass'];
     $rally = new Rally($username, $password);
-
+    
     $input_type = $_GET['input_type'];
     //Switch Cases for the frontend calls
     //Receive a request call from front-end and respoends to it
@@ -82,7 +85,7 @@ else {
             //Fetches  Information about all the  projects from Rally
             $proj_list = $rally->find('Project', '', '', 'ScheduleState,HasParent,Parent');
 
-
+            
             $projects_count = count($proj_list);
 
             $project_array = array();
@@ -792,7 +795,7 @@ else {
             unset($_SESSION['pass']);
 
             break;
-       
+
         case 'EQI':
 
 

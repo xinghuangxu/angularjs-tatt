@@ -1,5 +1,6 @@
 /nbproject
 app/php/cookie.txt
+app/php/config.php
 
 /lib
 /node_modules
@@ -9,3 +10,4 @@ app/php/cookie.txt
 /test/assets/temp-*/
 /test/reports
 /test/tmp/
+

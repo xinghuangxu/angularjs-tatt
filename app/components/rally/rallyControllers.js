@@ -1,18 +1,5 @@
-//Login form controller
-rally.controller('myLogin', function ($scope, myAuthentication) {
-    myAuthentication.loginCheck();//check if have log in before
-    //Function to authenticate credentials
-    $scope.login =function(){
-        myAuthentication.login($scope.username,$scope.password);
-    };
-});
-
-rally.controller("rallyController",function(){
-    
-});
-
 //Data fields controller
-rally.controller("main", function ($scope, dataService, myAuthentication, $alert, $log) {
+rally.controller("rallyController", function ($scope, dataService, myAuthentication, $alert, $log) {
     //Pulls in variables from factory for use
     $scope.authentication = myAuthentication;
     //Array to store all actions that can be undone
