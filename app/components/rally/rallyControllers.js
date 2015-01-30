@@ -1,18 +1,5 @@
-//Login form controller
-rally.controller('myLogin', function ($scope, myAuthentication) {
-    myAuthentication.loginCheck();//check if have log in before
-    //Function to authenticate credentials
-    $scope.login =function(){
-        myAuthentication.login($scope.username,$scope.password);
-    };
-});
-
-rally.controller("rallyController",function(){
-    
-});
-
 //Data fields controller
-rally.controller("main", function ($scope, dataService, myAuthentication, $alert, $log) {
+rally.controller("rallyController", function ($scope, dataService, myAuthentication, $alert, $log) {
     //Pulls in variables from factory for use
     $scope.authentication = myAuthentication;
     //Array to store all actions that can be undone
@@ -383,7 +370,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
         //console.log("PCtrl Node ID: ", $scope.newNodeID);
 
         var addModal = $modal({
-            contentTemplate: 'rally/partial/_addForm.html',
+            contentTemplate: 'components/rally/partial/_addForm.html',
             scope: $scope,
             show: true
         });
@@ -500,7 +487,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
                         $scope.modalData.description = $sce.trustAsHtml(val.data.description);
                         console.log(val.data);
                         var myModal = $modal({
-                            contentTemplate: 'rally/partial/_modal.html',
+                            contentTemplate: 'components/rally/partial/_modal.html',
                             scope: $scope,
                             show: true
                         });
@@ -662,7 +649,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
                 )
 
                 var editModal = $modal({
-                    contentTemplate: 'rally/partial/_editForm.html',
+                    contentTemplate: 'components/rally/partial/_editForm.html',
                     scope: $scope,
                     show: true
                 });
@@ -773,7 +760,7 @@ rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication,
         if (!$scope.children) {
             //Modal to display confirmation message
             var deleteModal = $modal({
-                contentTemplate: 'rally/partial/_deleteModal.html',
+                contentTemplate: 'components/rally/partial/_deleteModal.html',
                 scope: $scope,
                 show: true
             });
