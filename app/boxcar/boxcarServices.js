@@ -40,7 +40,8 @@ boxcar.factory('boxcarContainer', function () {
             id: id,
             parent: parent.id,
             text: this.text,
-            icon: this.icon
+            icon: this.icon,
+            popover:true
         };
         for (var prop in this.attrs) {
             if (this.attrs.hasOwnProperty(prop)) {

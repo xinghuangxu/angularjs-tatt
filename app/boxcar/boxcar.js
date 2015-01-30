@@ -7,8 +7,15 @@ var boxcar = angular.module('spark.boxcar', ['ngAnimate', 'ngSanitize', 'mgcrea.
                     controller: 'BoxcarController'
                 });
             }])
-        .controller('BoxcarController', ['$scope', 'boxcarDataService', '$log', 'boxcarContainer', function ($scope, boxcarDataService, $log, boxcarContainer) {
+        .controller('BoxcarController', ['$scope', 'boxcarDataService', '$log', 'boxcarContainer', '$templateCache', '$compile', function ($scope, boxcarDataService, $log, boxcarContainer, $templateCache, $compile) {
                 $scope.boxcarDataService = boxcarDataService;
+
+                function updateTree(classifier) {
+                    if (classifier) {
+                        $scope.tree = boxcarContainer.toTreeFormat(classifier);
+                        $scope.$broadcast("ShowBoxcarTree", $scope.tree);
+                    }
+                }
                 //Function to request tree data
                 $scope.getTreeData = function () {
 
@@ -18,10 +25,9 @@ var boxcar = angular.module('spark.boxcar', ['ngAnimate', 'ngSanitize', 'mgcrea.
                             {},
                             function (val, response)
                             {
-
                                 $log.log("Tree Data: ", val);
                                 boxcarContainer.create(val);
-                                $scope.tree = boxcarContainer.toTreeFormat('pr');
+                                updateTree("pr")
                             }
                     );
                 };
@@ -33,27 +39,26 @@ var boxcar = angular.module('spark.boxcar', ['ngAnimate', 'ngSanitize', 'mgcrea.
                     {"value": 'approach', "text": "Approach"},
                     {"value": 'ownership', "text": "Ownership"}
                 ];
+                $scope.selectedClassifier = $scope.classifiers[0];
                 $scope.$watch('selectedClassifier', function (newValue, oldValue) {
-                    $scope.tree = boxcarContainer.toTreeFormat(newValue.value);
+                    updateTree(newValue.value);
                 });
-                
+
+                var leafInfoDialog = $templateCache.get("leafInfoDialog.html");
+                //Function when the add button is used
+                $scope.info = function () {
+                    var data = $scope.selectInfo;
+                    $scope.parent=data.parent;
+                    var finalContent = $compile("<div>" + leafInfoDialog + "</div>")($scope);
+                    var dialogBox = finalContent.attr("title", data.text);
+                    dialogBox.dialog({
+                        width: 500,
+                        height:300
+                    });
+                };
+
+                $scope.export = function () {
+
+                };
+
             }]);
-
-
-//Controller for the popover	
-boxcar.controller("boxcarPopoverController", function ($scope) {
-    //sets the submitted variable to false to reset the error visualizations
-    //$scope.submitted = false;
-
-    //Function when the add button is used
-    $scope.info = function () {
-
-
-    };
-
-    $scope.export = function () {
-
-
-    };
-
-});
