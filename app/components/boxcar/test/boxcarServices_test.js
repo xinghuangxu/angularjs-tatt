@@ -1,0 +1,191 @@
+'use strict';
+
+describe('spark.boxcar', function () {
+    var boxcarContainerService;
+    beforeEach(function () {
+        module('spark.boxcar');
+    });
+    beforeEach(inject(function (boxcarContainer) {
+        boxcarContainerService = boxcarContainer;
+    }));
+    describe('boxcarContainer service test', function () {
+        it('should convert json into jstree format', function () {
+            boxcarContainerService.create(val); //val define below
+            var tree = boxcarContainerService.toTreeFormat("pr");
+            expect(tree.length).toBe(56);
+            tree = boxcarContainerService.toTreeFormat("qual");
+            expect(tree.length).toBe(54);
+            tree = boxcarContainerService.toTreeFormat("impact");
+            expect(tree.length).toBe(70);
+            tree = boxcarContainerService.toTreeFormat("ownership");
+            expect(tree.length).toBe(50);
+            tree = boxcarContainerService.toTreeFormat("approach");
+            expect(tree.length).toBe(52);
+        });
+    });
+
+    //spec body
+    var val = [
+        {
+            "type": "PR",
+            "id": "LSIP20003423434",
+            "title": "Single Array Manager",
+            "strategy": {
+                "type": "P",
+                "name": "Placeholder: Test Automation",
+                "tpid": "T:234234212:TDGSDFD:243232",
+                "qual": "Other",
+                "impact": "Global",
+                "approach": "Functional",
+                "ownership": "Own",
+                "scope": "2",
+                "risk": "1"
+            }
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423434",
+            "title": "Single Array Manager",
+            "strategy": {
+                "type": "G",
+                "name": "ARVM general functionality",
+                "tpid": "T:234234212:TDGSDFD:243233",
+                "qual": "Operational Behaviour",
+                "impact": "ARVM",
+                "approach": "Functional",
+                "ownership": "Shared",
+                "shared": "EIT",
+                "scope": "4",
+                "risk": "1.4"
+            }
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423434",
+            "title": "Single Array Manager",
+            "strategy": {
+                "type": "G",
+                "name": "CLI testing for ARVM",
+                "tpid": "T:234234212:TDGSDFD:243234",
+                "qual": "Error handling",
+                "impact": "CLI, ARVM, MSW",
+                "approach": "Stress",
+                "ownership": "Shared",
+                "shared": "IOP",
+                "scope": "12",
+                "risk": "1.1"
+            }
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423434",
+            "title": "Single Array Manager",
+            "strategy": {
+                "type": "C",
+                "name": "General UI supportability",
+                "tpid": "T:234234212:TDGSDFD:243235",
+                "qual": "Supportability",
+                "impact": "MSW",
+                "approach": "Unit Test",
+                "ownership": "Own",
+                "scope": "3",
+                "risk": "1"
+            }
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423434",
+            "title": "Single Array Manager",
+            "strategy": {
+                "type": "G",
+                "name": "Upgrade from older to newer release",
+                "tpid": "T:234234212:TDGSDFD:243236",
+                "qual": "Serviceability",
+                "impact": "CLI",
+                "approach": "Module Test",
+                "ownership": "Own",
+                "scope": "1",
+                "risk": "1.4"
+            }
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423434",
+            "title": "Single Array Manager",
+            "strategy": {
+                "type": "G",
+                "name": "508C",
+                "tpid": "T:234234212:TDGSDFD:243237",
+                "qual": "Usability",
+                "impact": "MSW, CLI",
+                "approach": "Stress",
+                "ownership": "Shared",
+                "shared": "IOP",
+                "scope": "3",
+                "risk": "1.2"
+            }
+        },
+        {
+            "type": "Enh_req",
+            "id": "LSIP20003423436",
+            "title": "Enhance usability of SAM",
+            "strategy": {
+                "type": "G",
+                "name": "ARVM usability in DR",
+                "tpid": "T:234234212:TDGSDFD:243238",
+                "qual": "Usability",
+                "impact": "ARVM",
+                "approach": "Functional",
+                "ownership": "Own",
+                "scope": "0",
+                "risk": "1"
+            }
+        },
+        {
+            "type": "Enh_req",
+            "id": "LSIP20003423436",
+            "title": "Enhance usability of SAM",
+            "strategy": {
+                "type": "G",
+                "name": "Log collection",
+                "tpid": "T:234234212:TDGSDFD:273236",
+                "qual": "Serviceability",
+                "impact": "CLI",
+                "approach": "Unit Test",
+                "ownership": "Own",
+                "scope": "1",
+                "risk": "1.5"
+            }
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423437",
+            "title": "ARVM support for SAM"
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423432",
+            "title": "Cloud support in SAM"
+        },
+        {
+            "type": "Enh_req",
+            "id": "LSIP20003423439",
+            "title": "add additional controls to ARVM"
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423129",
+            "title": "Encryption support for CLI"
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423569",
+            "title": "CII for SAM"
+        },
+        {
+            "type": "PR",
+            "id": "LSIP20003423120",
+            "title": "New platform support"
+        }
+    ];
+});

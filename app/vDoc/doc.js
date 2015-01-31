@@ -4,7 +4,7 @@ angular.module('spark.doc', ['ngRoute', 'mgcrea.ngStrap'])
 
         .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider.when('/doc', {
-                    templateUrl: 'doc/README.html',
+                    templateUrl: 'vDoc/README.html',
                     controller: 'DocController'
                 });
             }])

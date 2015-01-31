@@ -12,18 +12,15 @@
                 <input type="text" id="treeSearch" value="" class="input form-control" />
             </div>
         </div>
-
         <div class="col-sm-10">
             <div ng-if="load" class="animate-if">  Loading...<img id="spinner" class="throbber" src="assets/img/throbber.gif"></div>
             <boxcar-jstree ng-model="tree"></boxcar-jstree>
         </div>
     </form>
-
     <script type="text/ng-template" id="leafInfoDialog.html">
        <div>Parent: {{ data.parent }}</div>
        <div>Text: {{ data.text }}</div>
     </script>
-
     <script type="text/ng-template" id="boxcarPopover.html">
         <div>
         <button tab-index="-1" type="button" class="btn-p btn-mini btn-p-default" ng-click="showInfo()" data-title="User Story Info" data-trigger="hover" data-type="info" data-delay="300">
