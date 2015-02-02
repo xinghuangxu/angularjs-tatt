@@ -1,17 +1,3 @@
-boxcar.factory('boxcarDataService', function ($resource) {
-    var boxcarDataService = {
-        editInfo: {nodeID: null, name: null, archID: null, iteration: null, icon: null, blocked: null},
-        addNode: {nodeID: null, name: null, archID: null, iteration: null, icon: null, blocked: null},
-        selectedNode: {nodeID: null, children: null, name: null}
-    };
-    boxcarDataService.resource = $resource('php/boxcar.php', {},
-            {
-                children: {method: 'GET', params: {}, timeout: '60000', isArray: true}
-            }
-    );
-    return boxcarDataService;
-});
-
 boxcar.factory('boxcarContainer', function () {
     var boxcarContainer = {};
     var boxcarData = {};

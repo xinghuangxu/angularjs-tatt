@@ -7,24 +7,14 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
                 //When this flag is true, the move_node event is skipped
                 scope.$on('ShowBoxcarTree', function (event, data)
                 {
-                    var to = false;
-                    $('#treeSearch').keyup(function () {
-                        if (to) {
-                            clearTimeout(to);
-                        }
-                        to = setTimeout(function () {
-                            var v = $('#treeSearch').val();
-                            element.jstree(true).search(v);
-                        }, 250);
+                    scope.$on('boxcarTreeSearchEvent', function (event, data) {
+                        element.jstree(true).search(data);
                     });
                     //Destroys last instance of jstree so a new one can be created. Ideally jstree refresh should be used, but functionality of refresh has not worked
                     element.jstree("destroy");
                     element.bind("select_node.jstree", function (e, data) {
                         scope.selectInfo = data.node.original;
                         scope.$apply(attrs.storeNode);
-                        //Disabled: This is a testing console log message
-                        console.log("Node ID: ", data.node.id);
-
                     });
                     //Loads the popover template
                     var popoverContent = $templateCache.get("boxcarPopover.html");
@@ -71,35 +61,27 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
                 }, true);
 
             }
-
         };
     }]).directive('boxcarTree', function () {
     return {
         restrict: 'E',
-        controller: ['$scope', 'boxcarDataService', '$log', 'boxcarContainer', '$templateCache', '$compile', function ($scope, boxcarDataService, $log, boxcarContainer, $templateCache, $compile) {
-                $scope.boxcarDataService = boxcarDataService;
+        controller: ['$scope', 'boxcarContainer', '$templateCache', '$compile', function ($scope, boxcarContainer, $templateCache, $compile) {
                 function updateTree(classifier) {
                     if (classifier) {
                         $scope.tree = boxcarContainer.toTreeFormat(classifier);
                         $scope.$broadcast("ShowBoxcarTree", $scope.tree);
                     }
                 }
-                //Function to request tree data
-                $scope.getTreeData = function () {
+                $scope.$on('LoadBoxcarTreeData', function (event, data) {
+                    boxcarContainer.create(data);
+                    updateTree("pr");
+                });
 
-                    //Service call to request tree data
-                    boxcarDataService.resource.children(
-                            {boxcarid: $scope.boxcarid, },
-                            {},
-                            function (val, response)
-                            {
-                                $log.log("Tree Data: ", val);
-                                boxcarContainer.create(val);
-                                updateTree("pr")
-                            }
-                    );
-                };
-                $scope.getTreeData();
+
+                $scope.$watch('treeSearchKey', function (newValue, oldValue) {
+                    $scope.$broadcast('boxcarTreeSearchEvent', newValue);
+                });
+
                 $scope.classifiers = [
                     {"value": 'pr', "text": "PR"},
                     {"value": 'qual', "text": "Qualification Area"},
@@ -114,8 +96,8 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
                 var leafInfoDialog = $templateCache.get("leafInfoDialog.html");
                 //Function when the add button is used
                 $scope.showInfo = function () {
-                    var newScope=$scope.$new(true); //create isolate scope
-                    newScope.data=$scope.selectInfo;
+                    var newScope = $scope.$new(true); //create isolate scope
+                    newScope.data = $scope.selectInfo;
                     var finalContent = $compile("<div>" + leafInfoDialog + "</div>")(newScope);
                     var dialogBox = finalContent.attr("title", newScope.data.text);
                     dialogBox.dialog({
@@ -126,6 +108,6 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
                 $scope.export = function () {
                 };
             }],
-        templateUrl: 'components/boxcar/partial/_boxcarTree.html'
+        templateUrl: 'components/boxcar/partial/_boxcarTree.html?v=1'
     };
 });

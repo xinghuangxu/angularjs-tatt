@@ -1,7 +1,7 @@
 <div class="container">
     <form class="form-horizontal col-sm-7">
         <div class="form-group">
-            <label for="Classifier" class="col-sm-2 control-label">Classifier</label>
+            <label for="Classifier" class="col-sm-2 control-label">Arrange By:</label>
             <div class="col-sm-5">
                 <select class="form-control" ng-model="selectedClassifier" ng-options="item.text for item in classifiers">
                 </select></div>
@@ -9,7 +9,7 @@
         <div class="form-group">
             <label for="Search" class="col-sm-2 control-label">Search:</label>
             <div class="col-sm-5">
-                <input type="text" id="treeSearch" value="" class="input form-control" />
+                <input type="text" ng-model="treeSearchKey" value="" class="input form-control" />
             </div>
         </div>
         <div class="col-sm-10">
