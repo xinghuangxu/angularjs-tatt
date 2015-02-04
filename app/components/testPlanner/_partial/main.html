@@ -29,7 +29,7 @@
             </div>
             <div class="panel-body">
                 <div class="btn-group">
-                    <label ng-repeat="pane in panes | filter:{group:group.name} | orderBy:order" class="btn btn-default" ng-class="{'btn-primary active': pane.active}"><input type="checkbox" ng-model="pane.active" >{{pane.label}}</label>
+                    <label ng-repeat="pane in panes | filter:{group:group.name} | orderBy:order" class="btn btn-default" ng-class="{'btn-primary active': pane.active}" ><input type="checkbox"  ng-model="pane.active">{{pane.label}}</label>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
     <!-- Container for panes -->
     <div class="height-wrapper">
         <div class="pane-container" ui-sortable="sortableOptions" ng-model="panes">
-            <div class="pane panel panel-default" spark-resizable ng-repeat="item in panes | filter: active ">
+            <div class="pane panel panel-default" spark-resizable ng-repeat="item in panes" ng-hide="!item.active">
                 <div class="panel-heading text-center move-icon sort-handle">
                     <h3 class="panel-title">{{item.label}}</h3>
                     <!-- 
