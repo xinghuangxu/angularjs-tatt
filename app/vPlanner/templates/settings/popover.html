@@ -1,0 +1,39 @@
+<div class="popover panel panel-default" ng-controller="settings">
+    <div class="arrow"></div>
+    <div class="panel-heading">
+        <h3 class="panel-title">Project Settings</h3>
+        <small ng-show="data.phase.releaseName">
+            <ol class="breadcrumb">
+                <li>{{data.phase.releaseName}}</li>
+                <li ng-show="data.phase.stackLayer">{{data.phase.stackLayer}}</li>
+                <li ng-show="data.phase.subLayer">{{data.phase.subLayer}}</li>
+            </ol>
+        </small>
+    </div>
+    <div class="popover-content panel-body">
+        <div class="timeline" ng-show="data.timeline">
+            <h4>Timeline:</h4>
+            {{data.timeline.start|date:'M/d/yy'}} <i class="glyphicon glyphicon-arrow-right"></i> {{data.timeline.end|date:'M/d/yy'}}
+        </div>
+        <div class="alm" ng-show="data.alm">
+            <h4>ALM Folder</h4>
+            {{data.alm.folder}}
+            <h4>ALM test set prefix</h4>
+            {{data.alm.prefix}}
+        </div>
+        <div class="rally" ng-show="data.rally">
+            <h4>Rally Projects</h4>
+            <ul class="list-unstyled">
+                <li ng-repeat="item in data.rally.projects">{{item}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="panel-footer clearfix">
+        <div class="pull-left">
+            <a href="" ng-click="edit()"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+        </div>
+        <div class="pull-right">
+            <a href="" ng-click="$hide()">Close <i class="glyphicon glyphicon-remove"></i></a>
+        </div>
+    </div>
+</div>

@@ -24,6 +24,7 @@
         <script src="bower_components/angular-resource/angular-resource.min.js"></script>
         <script src="bower_components/angular-route/angular-route.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="bower_components/angular-ui-sortable/sortable.js"></script>
         <script src="bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js"></script>
         <script src="bower_components/angular-wysiwyg/angular-wysiwyg.js"></script>
         <script src="bower_components/jstree/dist/jstree.min.js"></script>
@@ -39,15 +40,23 @@
         <script src="components/rally/rallyControllers.js"></script>
         <script src="components/rally/rallyDirectives.js"></script>
         <script src="components/rally/rallyFactory.js"></script>
+        
         <script src="components/boxcar/boxcar.js"></script>
         <script src="components/boxcar/boxcarDirectives.js"></script>
         <script src="components/boxcar/boxcarServices.js"></script>
+        
+        <script src="components/testPlanner/testPlanner.js"></script>
+        <script src="components/testPlanner/testPlannerControllers.js"></script>
+        <script src="components/testPlanner/testPlannerData.js"></script>
+        
+         <script src="components/ui/ui.js"></script>
 
 
         <!--views-->
         <script src="vDoc/doc.js"></script>
         <script src="vRally/rallyView.js"></script>
         <script src="vBoxcar/boxcarView.js"></script>
+        <script src="vPlanner/plannerView.js"></script>
 
     </head>
 
@@ -56,6 +65,7 @@
             <li><a href="#/doc">Documentation</a></li>
             <li><a href="#/rally">Rally</a></li>
             <li><a href="#/boxcar">Boxcar</a></li>
+            <li><a href="#/planner">Test Planner</a></li>
         </ul>
         <div id="alert-location"></div>
         <div ng-view></div>
