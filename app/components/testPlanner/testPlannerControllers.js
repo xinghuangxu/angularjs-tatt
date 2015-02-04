@@ -98,7 +98,7 @@ testPlanner.controller('paneView',
             $scope.panes = [
                 {
                     label: "Boxcar Scoping",
-                    template: $scope.HTML_LOCATION + "/boxcar.html",
+                    template: $scope.HTML_LOCATION + "/boxcar.html?v=2",
                     order: 0,
                     active: true,
                     group: 'what'
@@ -172,24 +172,39 @@ testPlanner.controller('paneView',
                 return item.active;
             };
         }
-);
+)
 
 // Pane controllers - each is a separate entity.
 // TODO: Export into separate files
-testPlanner.controller('sow', function ($scope) {
-});
-testPlanner.controller('archDocs', function ($scope) {
-});
-testPlanner.controller('rally', function ($scope) {
-});
-testPlanner.controller('test', function ($scope) {
-});
-testPlanner.controller('config', function ($scope) {
-});
-testPlanner.controller('alm', function ($scope) {
-});
-testPlanner.controller('weblab', function ($scope) {
-})
+        .controller('sow', function ($scope) {
+        })
+        .controller('archDocs', function ($scope) {
+        })
+        .controller('rally', function ($scope) {
+        })
+        .controller('test', function ($scope) {
+        })
+        .controller('config', function ($scope) {
+        })
+        .controller('alm', function ($scope) {
+        })
+        .controller('weblab', function ($scope) {
+            
+        }).controller('boxcarPanelController',function($scope,boxcarDataService){
+            //Function to request tree data
+                $scope.getTreeData = function () {
+                    //Service call to request tree data
+                    boxcarDataService.resource.children(
+                            {boxcarid: $scope.boxcarid },
+                            {},
+                            function (val, response)
+                            {
+                                $scope.$broadcast('LoadBoxcarTreeData', val);
+                            }
+                    );
+                };
+                $scope.getTreeData();
+        })
 
 
 // Control settings popover

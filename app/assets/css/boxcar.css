@@ -1,0 +1,15 @@
+.boxcar-multi-arragement-tree .navbar-form{
+    top: 40px;
+    position: absolute;
+    padding-left: 0px;
+}
+
+.boxcar-multi-arragement-tree .jstree-container-ul{
+    margin-top: 15px;
+}
+.boxcar-multi-arragement-tree{
+    min-width: 450px;
+}
+.boxcar-multi-arragement-tree .form-control{
+    width:120px;
+}

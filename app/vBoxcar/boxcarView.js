@@ -23,12 +23,4 @@ angular.module('spark.boxcarView', ['ngResource','spark.boxcar'])
                 };
                 $scope.getTreeData();
             }])
-        .factory('boxcarDataService', ["$resource", function ($resource) {
-                var boxcarDataService = {};
-                boxcarDataService.resource = $resource('php/boxcar.php', {},
-                        {
-                            children: {method: 'GET', params: {}, timeout: '60000', isArray: true}
-                        }
-                );
-                return boxcarDataService;
-            }]);
+ ;

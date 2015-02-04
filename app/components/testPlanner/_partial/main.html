@@ -1,52 +1,55 @@
+
 <!-- Dropdown Navigation -->
-<div id="release-nav" ng-controller="releaseNav">
-    <button type="button" class="btn btn-default" ng-model="data.phase.releaseName" data-placeholder="Release" ng-options="item.value as item.label for item in releases" bs-select><span class="caret"></span></button>
-    <i ng-show="data.phase.releaseName" class="glyphicon glyphicon-chevron-right"></i>
-    <button type="button" class="btn btn-default" ng-model="data.phase.stackLayer" data-placeholder="Test Stack Layer" ng-options="item.value as item.label for item in stackLayers" bs-select ng-show="data.phase.releaseName"><span class="caret"></span></button>
-    <i ng-show="data.phase.stackLayer" class="glyphicon glyphicon-chevron-right"></i>
-    <button type="button" class="btn btn-default" ng-model="data.phase.subLayer" data-placeholder="Sub Layer" ng-options="item.value as item.label for item in subLayers" bs-select ng-show="data.phase.stackLayer"><span class="caret"></span></button>
-</div>
-<div id="other-nav">
-    <ul>
-        <li><a href="../landing_page/LandingPage.php" bs-tooltip data-title="Home" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-home"></i></a>
-        <li><a href="" bs-tooltip data-title="XREF" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-random"></i></a></li>
-        <li><a href="" bs-tooltip data-title="Metrics" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-stats"></i></a></li>
-        <li><a href="" bs-tooltip data-title="Report" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-list-alt"></i></a></li>
-        <li class="no-focus" tabindex="1" bs-popover 
-            data-container="body" data-template="{{HTML_LOCATION}}/settings/popover.html" 
-            data-html="true" data-trigger="click" data-placement="bottom-right">
-            <a href="" bs-tooltip data-title="Settings" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-cog"></i></a>
-        </li>
-        
-    </ul>
-</div>
-<!-- Content Pane Control -->
-<div class="pane-view" ng-controller="paneView">
-    <div id="pane-selection">
-        <div class="panel panel-default panel-narrow" ng-repeat="group in paneGroups | orderBy:order">
-            <div class="panel-heading">
-                <div class="panel-title">{{group.label}}</div>
-            </div>
-            <div class="panel-body">
-                <div class="btn-group">
-                    <label ng-repeat="pane in panes | filter:{group:group.name} | orderBy:order" class="btn btn-default" ng-class="{'btn-primary active': pane.active}" ><input type="checkbox"  ng-model="pane.active">{{pane.label}}</label>
+<div id="spark-test-planner">
+    <div id="release-nav" ng-controller="releaseNav">
+        <button type="button" class="btn btn-default" ng-model="data.phase.releaseName" data-placeholder="Release" ng-options="item.value as item.label for item in releases" bs-select><span class="caret"></span></button>
+        <i ng-show="data.phase.releaseName" class="glyphicon glyphicon-chevron-right"></i>
+        <button type="button" class="btn btn-default" ng-model="data.phase.stackLayer" data-placeholder="Test Stack Layer" ng-options="item.value as item.label for item in stackLayers" bs-select ng-show="data.phase.releaseName"><span class="caret"></span></button>
+        <i ng-show="data.phase.stackLayer" class="glyphicon glyphicon-chevron-right"></i>
+        <button type="button" class="btn btn-default" ng-model="data.phase.subLayer" data-placeholder="Sub Layer" ng-options="item.value as item.label for item in subLayers" bs-select ng-show="data.phase.stackLayer"><span class="caret"></span></button>
+    </div>
+    <div id="other-nav">
+        <ul>
+            <li><a href="../landing_page/LandingPage.php" bs-tooltip data-title="Home" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-home"></i></a>
+            <li><a href="" bs-tooltip data-title="XREF" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-random"></i></a></li>
+            <li><a href="" bs-tooltip data-title="Metrics" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-stats"></i></a></li>
+            <li><a href="" bs-tooltip data-title="Report" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-list-alt"></i></a></li>
+            <li class="no-focus" tabindex="1" bs-popover 
+                data-container="body" data-template="{{HTML_LOCATION}}/settings/popover.html" 
+                data-html="true" data-trigger="click" data-placement="bottom-right">
+                <a href="" bs-tooltip data-title="Settings" data-trigger="hover" placement="bottom"><i class="glyphicon glyphicon-cog"></i></a>
+            </li>
+
+        </ul>
+    </div>
+    <!-- Content Pane Control -->
+    <div class="pane-view" ng-controller="paneView">
+        <div id="pane-selection">
+            <div class="panel panel-default panel-narrow" ng-repeat="group in paneGroups| orderBy:order">
+                <div class="panel-heading">
+                    <div class="panel-title">{{group.label}}</div>
+                </div>
+                <div class="panel-body">
+                    <div class="btn-group">
+                        <label ng-repeat="pane in panes| filter:{group:group.name} | orderBy:order" class="btn btn-default" ng-class="{'btn-primary active': pane.active}" ><input type="checkbox"  ng-model="pane.active">{{pane.label}}</label>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Container for panes -->
-    <div class="height-wrapper">
-        <div class="pane-container" ui-sortable="sortableOptions" ng-model="panes">
-            <div class="pane panel panel-default" spark-resizable ng-repeat="item in panes" ng-hide="!item.active">
-                <div class="panel-heading text-center move-icon sort-handle">
-                    <h3 class="panel-title">{{item.label}}</h3>
-                    <!-- 
-                    <i class="ui-icon ui-icon-gripsmall-diagonal-se rotate-180 sort-handle move-icon pull-left"></i>
-                    <i class="ui-icon ui-icon-gripsmall-diagonal-se rotate-270 sort-handle move-icon pull-right"></i>
-                     -->
+
+        <!-- Container for panes -->
+        <div class="height-wrapper">
+            <div class="pane-container" ui-sortable="sortableOptions" ng-model="panes">
+                <div class="pane panel panel-default" spark-resizable ng-repeat="item in panes" ng-hide="!item.active">
+                    <div class="panel-heading text-center move-icon sort-handle">
+                        <h3 class="panel-title">{{item.label}}</h3>
+                        <!-- 
+                        <i class="ui-icon ui-icon-gripsmall-diagonal-se rotate-180 sort-handle move-icon pull-left"></i>
+                        <i class="ui-icon ui-icon-gripsmall-diagonal-se rotate-270 sort-handle move-icon pull-right"></i>
+                        -->
+                    </div>
+                    <div class="panel-body" ng-include="item.template"></div>
                 </div>
-                <div class="panel-body" ng-include="item.template"></div>
             </div>
         </div>
     </div>

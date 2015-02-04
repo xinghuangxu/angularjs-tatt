@@ -108,6 +108,6 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
                 $scope.export = function () {
                 };
             }],
-        templateUrl: 'components/boxcar/partial/_boxcarTree.html?v=1'
+        templateUrl: 'components/boxcar/partial/_boxcarTree.html?v=2'
     };
 });

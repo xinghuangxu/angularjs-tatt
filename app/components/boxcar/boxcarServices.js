@@ -27,7 +27,7 @@ boxcar.factory('boxcarContainer', function () {
             parent: parent.id,
             text: this.text,
             icon: this.icon,
-            popover:true
+            popover: true
         };
         for (var prop in this.attrs) {
             if (this.attrs.hasOwnProperty(prop)) {
@@ -81,9 +81,9 @@ boxcar.factory('boxcarContainer', function () {
             pr[data['id']].add(leaf);
             for (var index in fileterList) {
                 var attributeName = fileterList[index]; //qual, impact, approach
-                var storage= boxcarData[attributeName];
-                var attrValue=leaf[attributeName];
-                
+                var storage = boxcarData[attributeName];
+                var attrValue = leaf[attributeName];
+
                 var nameList = [];
                 if (attrValue.indexOf(',') > -1) {
                     nameList = attrValue.split(',');
@@ -130,6 +130,14 @@ boxcar.factory('boxcarContainer', function () {
         }
     };
     return boxcarContainer;
-});
+}).factory('boxcarDataService', ["$resource", function ($resource) {
+        var boxcarDataService = {};
+        boxcarDataService.resource = $resource('php/boxcar.php', {},
+                {
+                    children: {method: 'GET', params: {}, timeout: '60000', isArray: true}
+                }
+        );
+        return boxcarDataService;
+    }])
 
 
