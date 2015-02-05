@@ -11,7 +11,7 @@ body {
     overflow:hidden;
 }
 
-#spark-test-planner {
+.spark-test-planner {
     width: 1500px;
     margin: 0 auto;
     position:absolute;
@@ -20,6 +20,16 @@ body {
     left: 0;
     right: 0;
     
+}
+
+/*.spark-test-planner .height-wrapper .panel{
+    height:500px;
+    
+}
+*/.spark-test-planner .height-wrapper .panel-body{
+/*    height:550px;
+    overflow-x: auto;*/
+    padding:0;
 }
 
 #release-nav {
@@ -208,5 +218,3 @@ h3.panel-title  {
     top: 48%;
     z-index: 1000;
 }
-
-

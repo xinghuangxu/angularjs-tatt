@@ -1,82 +1,81 @@
 <div class="modal-header modal-lg">
-  <h3>Edit User Story</h3>
+    <h3>Edit User Story</h3>
 </div>
 
 <div class="modal-body form-group">
-	<form name="editForm" id="editForm">
-	<table>
-	<tr class="border: 0px; margin: 0px;">
-			<td> &nbsp </td>
-			<td colspan="3" style="color: red;" ng-if="editForm.title.$invalid && editForm.title.$dirty" >Title is required to create new User Story.</td>
-			<td colspan="3" style="color: red;" ng-if="editForm.title.$error.maxlength && formNode.title.$dirty" >Title is too long</td>
-		</tr>
-		<tr class="form-group" ng-class="{ 'has-error': editForm.title.$invalid && editForm.title.$dirty}">
-			<td> <b><span style = "color: red">*</span>Title:</b> </td>
-			<td colspan="3"> <input type="text" name="title"  class="form-control-mt form-control" ng-model="editData.Title" style="width: 400px;"  ng-maxlength="50" required>
-			</td>
-		</tr>
-		
-		<tr>
-		   <td> <b>ID:</b> </td>
-		   <td>{{editData.id}}</td>
-			<td> <b>Owner:</b>  </td>
-			<td><select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.owner" data-html="1" ng-options="owner for owner in ownerList"></select> </td>
-		</tr>
-		
-		<tr>
-			<td> <b>State:</b></td>
-			<td><select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.state" data-html="1" ng-hide="parent">
-				<option value="Defined">Defined</option>
-				<option value="In-Progress">In-Progress</option>
-				<option value="Completed">Completed</option>
-				<option value="Accepted">Accepted</option>
-			</select> 
-			<span ng-show="parent">{{editData.state}}</span>
-			</td>
-			<td> <b>Release:</b></td>
-			<td>
-					<select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.release" data-html="1" ng-options="release for release in exactReleaseList" ng-hide="parent"></select>
-					<span ng-show="parent">{{releaseChosen}}</span>
-			</td>
-		</tr>
-		
-		<tr>
-			<td> <b>Points:</b> </td>
-			 <td><select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.points" data-html="1" ng-hide="parent">
-				<option value="0">0</option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="5">5</option>
-				<option value="8">8</option>
-				<option value="13">13</option>
-				<option value="21">21</option>
-				<option ng-value="editData.points">{{editData.points}}</option>
-			</select> 
-			<span ng-show="parent">{{editData.points}}</span>
-			</td>
-			<td> <b>Iteration:</b></td>
-			<td> 
-					<select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.iteration" data-html="1" ng-options="iteration for iteration in exactIterationList" ng-hide="parent"> </select> 
-					<span ng-show="parent">{{editData.iteration}}</span>
-			</td> 
-		</tr>
-		
-		<tr>
-			<td > <b>Architectural Topic ID:</b></td>
-			<td colspan="3"><input type="text" class="form-control-mt form-control" ng-model="editData.arch" style="width: 400px;" > </td>
-		</tr>
-	</table>
+    <form name="editForm" id="editForm">
+        <table>
+            <tr class="border: 0px; margin: 0px;">
+                <td> &nbsp </td>
+                <td colspan="3" style="color: red;" ng-if="editForm.title.$invalid && editForm.title.$dirty" >Title is required to create new User Story.</td>
+                <td colspan="3" style="color: red;" ng-if="editForm.title.$error.maxlength && formNode.title.$dirty" >Title is too long</td>
+            </tr>
+            <tr class="form-group" ng-class="{ 'has-error': editForm.title.$invalid && editForm.title.$dirty}">
+                <td> <b><span style = "color: red">*</span>Title:</b> </td>
+                <td colspan="3"> <input type="text" name="title"  class="form-control-mt form-control" ng-model="editData.Title" style="width: 400px;"  ng-maxlength="50" required>
+                </td>
+            </tr>
 
-	<br>
-	<b>Description:</b>
-	<wysiwyg textarea-id="question" textarea-class="form-control"  textarea-height="200px" textarea-name="textareaQuestion" textarea-required ng-model="editData.description" enable-bootstrap-title="false" textarea-menu="{{}}"></wysiwyg> 
-	
+            <tr>
+                <td> <b>ID:</b> </td>
+                <td>{{editData.id}}</td>
+                <td> <b>Owner:</b>  </td>
+                <td><select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.owner" data-html="1" ng-options="owner for owner in ownerList"></select> </td>
+            </tr>
+
+            <tr>
+                <td> <b>State:</b></td>
+                <td><select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.state" data-html="1" ng-hide="parent">
+                        <option value="Defined">Defined</option>
+                        <option value="In-Progress">In-Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Accepted">Accepted</option>
+                    </select> 
+                    <span ng-show="parent">{{editData.state}}</span>
+                </td>
+                <td> <b>Release:</b></td>
+                <td>
+                    <select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.release" data-html="1" ng-options="release for release in exactReleaseList" ng-hide="parent"></select>
+                    <span ng-show="parent">{{releaseChosen}}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td> <b>Points:</b> </td>
+                <td><select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.points" data-html="1" ng-hide="parent">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="8">8</option>
+                        <option value="13">13</option>
+                        <option value="21">21</option>
+                        <option ng-value="editData.points">{{editData.points}}</option>
+                    </select> 
+                    <span ng-show="parent">{{editData.points}}</span>
+                </td>
+                <td> <b>Iteration:</b></td>
+                <td> 
+                    <select class="form-control-dd" style="border:1px solid silver; height:22px;" ng-model="editData.iteration" data-html="1" ng-options="iteration for iteration in exactIterationList" ng-hide="parent"> </select> 
+                    <span ng-show="parent">{{editData.iteration}}</span>
+                </td> 
+            </tr>
+
+            <tr>
+                <td > <b>Architectural Topic ID:</b></td>
+                <td colspan="3"><input type="text" class="form-control-mt form-control" ng-model="editData.arch" style="width: 400px;" > </td>
+            </tr>
+        </table>
+
+        <br>
+        <b>Description:</b>
+        <wysiwyg textarea-id="question" textarea-class="form-control"  textarea-height="200px" textarea-name="textareaQuestion" textarea-required ng-model="editData.description" enable-bootstrap-title="false" textarea-menu="{{}}"></wysiwyg> 
+    </form>
 </div>
 <div class="modal-footer">
-	<button type="submit" class="btn btn-primary"  ng-click="esubmit('save');" ng-disabled="editForm.$invalid">Save</button>
-	<button type="submit" class="btn btn-primary"   ng-click="esubmit('close');" ng-disabled="editForm.$invalid">Save and Close</button>
-	<button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+    <button type="submit" class="btn btn-primary"  ng-click="esubmit('save');" ng-disabled="editForm.$invalid">Save</button>
+    <button type="submit" class="btn btn-primary"   ng-click="esubmit('close');" ng-disabled="editForm.$invalid">Save and Close</button>
+    <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
 </div>
 
-	</form>

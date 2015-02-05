@@ -119,7 +119,7 @@ testPlanner.controller('paneView',
                 },
                 {
                     label: "Rally",
-                    template: $scope.HTML_LOCATION + "/rally.html",
+                    template: $scope.HTML_LOCATION + "/rally.html?v=1",
                     order: 3,
                     active: true,
                     group: 'when'
@@ -180,7 +180,15 @@ testPlanner.controller('paneView',
         })
         .controller('archDocs', function ($scope) {
         })
-        .controller('rally', function ($scope) {
+        .controller('rallyPanelController', function ($scope) {
+            var data = {
+                project: "Spark Sandbox",
+                release: "All",
+                iteration: ""
+            };
+            $scope.broadcast = function () {
+                $scope.$broadcast("RallyLoadTree", data);
+            };
         })
         .controller('test', function ($scope) {
         })
@@ -189,22 +197,22 @@ testPlanner.controller('paneView',
         .controller('alm', function ($scope) {
         })
         .controller('weblab', function ($scope) {
-            
-        }).controller('boxcarPanelController',function($scope,boxcarDataService){
-            //Function to request tree data
-                $scope.getTreeData = function () {
-                    //Service call to request tree data
-                    boxcarDataService.resource.children(
-                            {boxcarid: $scope.boxcarid },
-                            {},
-                            function (val, response)
-                            {
-                                $scope.$broadcast('LoadBoxcarTreeData', val);
-                            }
-                    );
-                };
-                $scope.getTreeData();
-        })
+
+        }).controller('boxcarPanelController', function ($scope, boxcarDataService) {
+    //Function to request tree data
+    $scope.getTreeData = function () {
+        //Service call to request tree data
+        boxcarDataService.resource.children(
+                {boxcarid: $scope.boxcarid},
+        {},
+                function (val, response)
+                {
+                    $scope.$broadcast('LoadBoxcarTreeData', val);
+                }
+        );
+    };
+    $scope.getTreeData();
+})
 
 
 // Control settings popover

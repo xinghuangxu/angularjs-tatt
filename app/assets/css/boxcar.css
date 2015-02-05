@@ -1,7 +1,11 @@
 .boxcar-multi-arragement-tree .navbar-form{
-    top: 40px;
-    position: absolute;
     padding-left: 0px;
+    width: 100%;
+}
+
+.boxcar-multi-arragement-tree .jstree{
+    max-height: 500px;
+    overflow-y:auto;
 }
 
 .boxcar-multi-arragement-tree .jstree-container-ul{
@@ -12,4 +16,7 @@
 }
 .boxcar-multi-arragement-tree .form-control{
     width:120px;
+}
+.boxcar-multi-arragement-tree  label{
+    padding-right:0px;
 }

@@ -11,13 +11,14 @@
         <div class="form-group">
             <input type="text" ng-model="treeSearchKey" class="form-control input-sm" placeholder="Search">
         </div>
+         <div ng-if="load" class="animate-if">  Loading...<img id="spinner" class="throbber" src="assets/img/throbber.gif">
+    </div>
+    <div boxcar-jstree ></div>
         <!--        <div class="col-sm-10">
                     
                 </div>-->
     </form>
-    <div ng-if="load" class="animate-if">  Loading...<img id="spinner" class="throbber" src="assets/img/throbber.gif">
-    </div>
-    <boxcar-jstree></boxcar-jstree>
+   
     <!--    <form class="form-horizontal col-sm-7">
             <div class="form-group">
                 <label for="Classifier" class="col-sm-2 control-label">Arrange By:</label>

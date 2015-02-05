@@ -14,15 +14,15 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                 scope.$watch(attrs.addFlag, function ()
                 {
                     if (scope.authentication.addNode.nodeID) {
-                        editState = scope.editEnable();
+                        var editState = scope.editEnable();
                         scope.enabled = true;
 
-                        nodeObj = $(element).jstree(true).get_node(scope.authentication.actionNode);
-                        $(element).jstree(true).open_node(scope.authentication.actionNode);
-                        $(element).jstree(true).create_node(nodeObj, {id: scope.authentication.addNode.nodeID, TopicID: scope.authentication.addNode.archID, parent: scope.authentication.actionNode, text: scope.authentication.addNode.name, Iteration: scope.authentication.addNode.iteration, icon: scope.authentication.addNode.icon, Blocked: scope.authentication.addNode.blocked}, false, false);
+                        var nodeObj = element.jstree(true).get_node(scope.authentication.actionNode);
+                        element.jstree(true).open_node(scope.authentication.actionNode);
+                        element.jstree(true).create_node(nodeObj, {id: scope.authentication.addNode.nodeID, TopicID: scope.authentication.addNode.archID, parent: scope.authentication.actionNode, text: scope.authentication.addNode.name, Iteration: scope.authentication.addNode.iteration, icon: scope.authentication.addNode.icon, Blocked: scope.authentication.addNode.blocked}, false, false);
                         console.log("Parent Node: ", nodeObj);
-                        console.log("new Node: ", $(element).jstree(true).get_node(scope.authentication.addNode.nodeID));
-                        $(element).jstree(true).open_node(nodeObj);
+                        console.log("new Node: ", element.jstree(true).get_node(scope.authentication.addNode.nodeID));
+                        element.jstree(true).open_node(nodeObj);
 
                         scope.enabled = editState;
                     }
@@ -34,20 +34,20 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                         editState = scope.editEnable();
                         scope.enabled = true;
 
-                        nodeObj = $(element).jstree(true).get_node(scope.authentication.actionNode);
-                        Child = $(element).jstree(true).get_node(nodeObj.children);
+                        nodeObj = element.jstree(true).get_node(scope.authentication.actionNode);
+                        Child = element.jstree(true).get_node(nodeObj.children);
                         ChildrenArray = [];
-                        while ($(element).jstree(true).is_parent(Child)) {
-                            SubChild = $(element).jstree(true).get_node(Child.children);
+                        while (element.jstree(true).is_parent(Child)) {
+                            SubChild = element.jstree(true).get_node(Child.children);
                             //console.log("Child", Child.text, "Sub Child", SubChild.text);
                             ChildrenArray.push({"id": Child.id, "text": Child.text, "icon": Child.icon, "children": [{"id": SubChild.id, "text": SubChild.text, "icon": SubChild.icon}]});
                             Child = SubChild;
                         }
-                        if ($(element).jstree(true).is_leaf(Child) & ChildrenArray.length === 0) {
+                        if (element.jstree(true).is_leaf(Child) & ChildrenArray.length === 0) {
                             ChildrenArray.push({"id": Child.id, "text": Child.text, "icon": Child.icon});
                         }
-                        $(element).jstree(true).open_node(scope.authentication.actionNode);
-                        $(element).jstree(true).create_node(nodeObj, {
+                        element.jstree(true).open_node(scope.authentication.actionNode);
+                        element.jstree(true).create_node(nodeObj, {
                             id: scope.authentication.editInfo.nodeID,
                             TopicID: scope.authentication.editInfo.archID,
                             parent: scope.authentication.actionNode,
@@ -58,8 +58,8 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                             children: ChildrenArray}, false, false);
 
                         console.log("Parent Node: ", nodeObj);
-                        console.log("new Node: ", $(element).jstree(true).get_node(scope.authentication.editInfo.nodeID));
-                        $(element).jstree(true).open_node(nodeObj);
+                        console.log("new Node: ", element.jstree(true).get_node(scope.authentication.editInfo.nodeID));
+                        element.jstree(true).open_node(nodeObj);
                         scope.nullEditInfo();
 
                         scope.enabled = editState;
@@ -73,7 +73,7 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                         editState = scope.editEnable();
                         scope.enabled = true;
 
-                        $(element).jstree("delete_node", $(element).jstree(true).get_node(scope.authentication.actionNode));
+                        element.jstree("delete_node", element.jstree(true).get_node(scope.authentication.actionNode));
                         scope.deleteNode();
                         //Disabled: Desired method, however another $digest is already running during this call therefore creating an error. Will be fixed or re-evaluated in the future
                         //scope.$apply(attrs.deleteNode);
@@ -91,7 +91,7 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                         scope.enabled = true;
 
                         undoFlag = true;
-                        $(element).jstree(true).move_node(scope.undoData.input.node, scope.undoData.input.parent, scope.undoData.position);
+                        element.jstree(true).move_node(scope.undoData.input.node, scope.undoData.input.parent, scope.undoData.position);
 
                         //Reset the checkbox variable to it's previous state
                         scope.enabled = editState;
@@ -108,15 +108,15 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                         }
                         to = setTimeout(function () {
                             var v = $('#treeSearch').val();
-                            $(element).jstree(true).search(v);
+                            element.jstree(true).search(v);
                         }, 250);
                     });
 
                     //Destroys last instance of jstree so a new one can be created. Ideally jstree refresh should be used, but functionality of refresh has not worked
-                    $(element).jstree("destroy");
+                    element.jstree("destroy");
 
                     //Event that fires when a node is moved
-                    $(element).bind('move_node.jstree', function (e, data) {
+                    element.bind('move_node.jstree', function (e, data) {
                         console.log('Move Data: ', data);
                         //This sends information to the controller (to send to the back-end) if a node is moved (excluding re-ordering amongst siblings)
                         if (data.old_parent != data.parent && undoFlag == false) {
@@ -134,7 +134,7 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                     })
 
 
-                    $(element).bind("select_node.jstree", function (e, data) {
+                    element.bind("select_node.jstree", function (e, data) {
                         scope.selectInfo = {nodeID: data.node.id, children: data.node.children.length, name: data.node.text};
                         scope.$apply(attrs.storeNode);
                         //Disabled: This is a testing console log message
@@ -143,11 +143,11 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                     })
 
                     //Loads the popover template
-                    popoverContent = $templateCache.get("popover.html");
+                    var popoverContent = $templateCache.get(scope.PopoverId);
                     //Gives the popover a controller
-                    finalContent = $compile("<div>" + popoverContent + "</div>")(scope);
+                    var finalContent = $compile("<div>" + popoverContent + "</div>")(scope);
                     //Options of popover
-                    options = {
+                    var options = {
                         html: true,
                         content: finalContent,
                         title: false,
@@ -156,12 +156,12 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                     };
 
                     //Current method for binding the popover
-                    $(element).on("hover_node.jstree", function (e, data, node) {
+                    element.on("hover_node.jstree", function (e, data, node) {
                         $(".jstree-hovered").popover(options);
-                    })
+                    });
 
                     //jstree format setup
-                    $(element).jstree(
+                    element.jstree(
                             {
                                 //"state" plugin currently disabled since it does not work alongside our select node function
                                 plugins: ["themes", "search", "dnd", "crrm", "ui"],
@@ -205,11 +205,14 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
             }
 
         };
-    }]).directive('rally', function () {
-    return {
-        restrict: 'E',
-        controller: "rallyController",
-        templateUrl: 'components/rally/partial/_rally.html'
-    };
-});
-;
+    }])
+        .directive('rally', function () {
+            return {
+                restrict: 'E',
+                controller: "rallyController",
+                templateUrl: 'components/rally/partial/_rally.html?v=2',
+                link: function (scope, element, attrs) {
+                    
+                }
+            };
+        });

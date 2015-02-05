@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 
 //Calling PHP TOOLKIT functions
@@ -72,7 +73,7 @@ else {
     $username = $_SESSION['user'];
     $password = $_SESSION['pass'];
     $rally = new Rally($username, $password);
-    
+
     $input_type = $_GET['input_type'];
     //Switch Cases for the frontend calls
     //Receive a request call from front-end and respoends to it
@@ -85,7 +86,7 @@ else {
             //Fetches  Information about all the  projects from Rally
             $proj_list = $rally->find('Project', '', '', 'ScheduleState,HasParent,Parent');
 
-            
+
             $projects_count = count($proj_list);
 
             $project_array = array();
@@ -196,6 +197,12 @@ else {
             break;
         //Asking for a Rally Tree of Releases in Rally
         case 'treeData':
+            if (file_exists("cache")) {
+                $myfile = fopen("cache", "r") or die("Unable to open file!");
+                echo fread($myfile, filesize("cache"));
+                fclose($myfile);
+                return;
+            }
             $projname = $_GET['project'];
             $releasename = $_GET['release'];
             $Iteration = $_GET['iteration'];
@@ -412,7 +419,10 @@ else {
                 $output = array('data' => $FinalArrayWithObject);
                 echo json_encode($output);
             }
-
+            //cache things for testing purpose never to be checked in
+            $cachefile = fopen("cache", "w") or die("Unable to open file!");
+            fwrite($cachefile, json_encode($output));
+            fclose($cachefile);
             break;
 
         case 'metadata':

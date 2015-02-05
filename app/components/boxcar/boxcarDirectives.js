@@ -2,7 +2,7 @@
 boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templateCache, $compile)
     {
         return {
-            restrict: 'E',
+            restrict: 'EA',
             link: function (scope, element, attrs) {
                 //When this flag is true, the move_node event is skipped
                 scope.$on('ShowBoxcarTree', function (event, data)
@@ -64,7 +64,7 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
         };
     }]).directive('boxcarTree', function () {
     return {
-        restrict: 'E',
+        restrict: 'EA',
         controller: ['$scope', 'boxcarContainer', '$templateCache', '$compile', function ($scope, boxcarContainer, $templateCache, $compile) {
                 function updateTree(classifier) {
                     if (classifier) {
@@ -108,6 +108,6 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
                 $scope.export = function () {
                 };
             }],
-        templateUrl: 'components/boxcar/partial/_boxcarTree.html?v=2'
+        templateUrl: 'components/boxcar/partial/_boxcarTree.html?v=4'
     };
 });

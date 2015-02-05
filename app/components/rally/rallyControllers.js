@@ -1,5 +1,11 @@
 //Data fields controller
-rally.controller("rallyController", function ($scope, dataService, myAuthentication, $alert, $log) {
+rally.controller("rallyController",['$scope',function($scope){
+    $scope.PopoverId="popover.html";
+    $scope.test=function(){
+        
+    };
+}]);
+rally.controller("rallyTree", function ($scope, dataService, myAuthentication, $alert, $log) {
     //Pulls in variables from factory for use
     $scope.authentication = myAuthentication;
     //Array to store all actions that can be undone
@@ -118,18 +124,18 @@ rally.controller("rallyController", function ($scope, dataService, myAuthenticat
                 }
         );
     };
-
+    
+     $scope.$on("RallyLoadTree",function(event,data){
+        $scope.getTreeData(data);
+    });
+    
     //Function to request tree data
-    $scope.getTreeData = function () {
+    $scope.getTreeData = function (data) {
 
         $scope.load = true;
         //Service call to request tree data
         dataService.treeData(
-                {
-                    project: $scope.projectChosen,
-                    release: $scope.releaseChosen,
-                    iteration: $scope.iterationChosen
-                },
+                data,
         {},
                 function (val, response)
                 {
@@ -345,7 +351,7 @@ rally.controller("rallyController", function ($scope, dataService, myAuthenticat
 });
 
 //Controller for the popover	
-rally.controller("popoverCtrl", function ($scope, dataService, myAuthentication, $modal, $alert, $sce) {
+rally.controller("rallyPopoverCtrl", function ($scope, dataService, myAuthentication, $modal, $alert, $sce) {
     //sets the submitted variable to false to reset the error visualizations
     //$scope.submitted = false;
 
