@@ -1,8 +1,6 @@
 //factory for sharing data between controllers
 rally.factory('myAuthentication', function (dataService, $location, $log) {
     var myAuthentication = {
-        loginView: true,
-        dataView: false,
         actionNode: null,
         deleteSuccess: false,
         editInfo: {nodeID: null, name: null, archID: null, iteration: null, icon: null, blocked: null},

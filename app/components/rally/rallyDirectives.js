@@ -31,7 +31,7 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                 scope.$watch(attrs.editFlag, function ()
                 {
                     if (scope.authentication.editInfo.nodeID) {
-                        editState = scope.editEnable();
+                        var editState = scope.editEnable();
                         scope.enabled = true;
 
                         nodeObj = element.jstree(true).get_node(scope.authentication.actionNode);
@@ -151,6 +151,7 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
 
                     element.bind("select_node.jstree", function (element, data) {
                         var target=$($(element.currentTarget).find('.jstree-clicked')[0]);
+                        //                        options['container']='.jstree-clicked';
                         target.popover(options);
                         target.popover("show");
                         scope.selectInfo = {nodeID: data.node.id, children: data.node.children.length, name: data.node.text};
@@ -209,9 +210,8 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
             return {
                 restrict: 'E',
                 controller: "rallyController",
-                templateUrl: 'components/rally/partial/_rally.html?v=2',
+                templateUrl: 'components/rally/partial/_rally.html?v=3',
                 link: function (scope, element, attrs) {
-
                 }
             };
         });

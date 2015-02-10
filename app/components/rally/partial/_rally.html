@@ -1,5 +1,6 @@
 <!-- Data Field -->	
 <div class="navbar-form navbar-left rally">
+    <div id="alert-location"></div>
     <div ng-controller="rallyTree">
         <form>
             <!--            <label>Project Name:&nbsp;</label><br />
@@ -12,13 +13,14 @@
                             <option value="" disabled>Choose Release</option>
                         </select> <br /><br />-->
 
-            <label class=" control-label input-sm">Iteration: &nbsp;</label>
+            
+            <label class=" control-label input-sm">Iteration:</label>
             <div class="form-group">
                 <select class="form-control input-sm" style="border:1px solid silver;" ng-model="iterationChosen" data-html="1" ng-options = "iteration for iteration in iterationList" ng-change="getTreeData()" ng-disabled="!iterationList">
                     <option value="" disabled>Choose Iteration</option>
                 </select>
             </div>
-
+           
             <label for="Search" class=" control-label input-sm">Search:</label>
 
             <div class="form-group">
