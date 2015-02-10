@@ -134,13 +134,7 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                     })
 
 
-                    element.bind("select_node.jstree", function (e, data) {
-                        scope.selectInfo = {nodeID: data.node.id, children: data.node.children.length, name: data.node.text};
-                        scope.$apply(attrs.storeNode);
-                        //Disabled: This is a testing console log message
-                        console.log("Node ID: ", data.node.id);
 
-                    })
 
                     //Loads the popover template
                     var popoverContent = $templateCache.get(scope.PopoverId);
@@ -155,9 +149,14 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                         trigger: 'focus'
                     };
 
-                    //Current method for binding the popover
-                    element.on("hover_node.jstree", function (e, data, node) {
-                        $(".jstree-hovered").popover(options);
+                    element.bind("select_node.jstree", function (element, data) {
+                        var target=$($(element.currentTarget).find('.jstree-clicked')[0]);
+                        target.popover(options);
+                        target.popover("show");
+                        scope.selectInfo = {nodeID: data.node.id, children: data.node.children.length, name: data.node.text};
+                        scope.$apply(attrs.storeNode);
+                        //Disabled: This is a testing console log message
+                        console.log("Node ID: ", data.node.id);
                     });
 
                     //jstree format setup
@@ -212,7 +211,7 @@ rally.directive('jstree', ['$popover', '$templateCache', '$compile', function ($
                 controller: "rallyController",
                 templateUrl: 'components/rally/partial/_rally.html?v=2',
                 link: function (scope, element, attrs) {
-                    
+
                 }
             };
         });

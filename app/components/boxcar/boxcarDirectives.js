@@ -12,7 +12,12 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
                     });
                     //Destroys last instance of jstree so a new one can be created. Ideally jstree refresh should be used, but functionality of refresh has not worked
                     element.jstree("destroy");
-                    element.bind("select_node.jstree", function (e, data) {
+                    element.bind("select_node.jstree", function (event, data) {
+                        if (data.node.original.popover) {
+                            var target = $($(event.currentTarget).find('.jstree-clicked')[0]);
+                            target.popover(options);
+                            target.popover("show");
+                        }
                         scope.selectInfo = data.node.original;
                         scope.$apply(attrs.storeNode);
                     });
@@ -28,12 +33,6 @@ boxcar.directive('boxcarJstree', ['$templateCache', '$compile', function ($templ
                         placement: 'top',
                         trigger: 'focus'
                     };
-                    //Current method for binding the popover
-                    element.on("hover_node.jstree", function (e, data, node) {
-                        if (data.node.original.popover) {
-                            $(".jstree-hovered").popover(options);
-                        }
-                    });
                     //jstree format setup
                     element.jstree(
                             {
